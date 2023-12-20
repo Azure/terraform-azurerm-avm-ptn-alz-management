@@ -64,6 +64,17 @@ variable "automation_account_sku_name" {
   nullable    = false
 }
 
+variable "enable_telemetry" {
+  type        = bool
+  default     = true
+  description = <<DESCRIPTION
+This variable controls whether or not telemetry is enabled for the module.
+For more information see https://aka.ms/avm/telemetryinfo.
+If it is set to false, then no telemetry will be collected.
+DESCRIPTION
+  nullable    = false
+}
+
 variable "linked_automation_account_creation_enabled" {
   type        = bool
   default     = true
@@ -147,13 +158,6 @@ variable "log_analytics_workspace_daily_quota_gb" {
   type        = number
   default     = null
   description = "The daily ingestion quota in GB for the Log Analytics Workspace."
-}
-
-variable "log_analytics_workspace_local_authentication_disabled" {
-  type        = bool
-  default     = false
-  description = "Whether or not local authentication is disabled for the Log Analytics Workspace."
-  nullable    = false
 }
 
 variable "log_analytics_workspace_internet_ingestion_enabled" {
