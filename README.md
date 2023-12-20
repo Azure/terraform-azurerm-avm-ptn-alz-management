@@ -189,6 +189,7 @@ docker run --rm -v ${pwd}:/src -w /src -e ARM_SUBSCRIPTION_ID -e ARM_TENANT_ID -
 | Name | Version |
 |------|---------|
 | <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | >= 3.0, < 4.0 |
+| <a name="provider_random"></a> [random](#provider\_random) | n/a |
 
 ## Modules
 
@@ -203,6 +204,8 @@ No modules.
 | [azurerm_log_analytics_solution.management](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/log_analytics_solution) | resource |
 | [azurerm_log_analytics_workspace.management](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/log_analytics_workspace) | resource |
 | [azurerm_resource_group.management](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
+| [azurerm_resource_group_template_deployment.telemetry](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group_template_deployment) | resource |
+| [random_id.telemetry](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/id) | resource |
 
 ## Inputs
 
@@ -215,6 +218,7 @@ No modules.
 | <a name="input_automation_account_name"></a> [automation\_account\_name](#input\_automation\_account\_name) | The name of the Azure Automation Account to create. | `string` | n/a | yes |
 | <a name="input_automation_account_public_network_access_enabled"></a> [automation\_account\_public\_network\_access\_enabled](#input\_automation\_account\_public\_network\_access\_enabled) | Whether or not public network access is enabled for the Azure Automation Account. | `bool` | `true` | no |
 | <a name="input_automation_account_sku_name"></a> [automation\_account\_sku\_name](#input\_automation\_account\_sku\_name) | The name of the SKU for the Azure Automation Account to create. | `string` | `"Basic"` | no |
+| <a name="input_enable_telemetry"></a> [enable\_telemetry](#input\_enable\_telemetry) | This variable controls whether or not telemetry is enabled for the module.<br>For more information see https://aka.ms/avm/telemetryinfo.<br>If it is set to false, then no telemetry will be collected. | `bool` | `true` | no |
 | <a name="input_linked_automation_account_creation_enabled"></a> [linked\_automation\_account\_creation\_enabled](#input\_linked\_automation\_account\_creation\_enabled) | A boolean flag to determine whether to deploy the Azure Automation Account linked to the Log Analytics Workspace or not. | `bool` | `true` | no |
 | <a name="input_location"></a> [location](#input\_location) | The Azure region where the resources will be deployed. | `string` | n/a | yes |
 | <a name="input_log_analytics_solution_plans"></a> [log\_analytics\_solution\_plans](#input\_log\_analytics\_solution\_plans) | The Log Analytics Solution Plans to create. | <pre>list(object({<br>    product   = string<br>    publisher = optional(string, "Microsoft")<br>  }))</pre> | <pre>[<br>  {<br>    "product": "OMSGallery/AgentHealthAssessment",<br>    "publisher": "Microsoft"<br>  },<br>  {<br>    "product": "OMSGallery/AntiMalware",<br>    "publisher": "Microsoft"<br>  },<br>  {<br>    "product": "OMSGallery/ChangeTracking",<br>    "publisher": "Microsoft"<br>  },<br>  {<br>    "product": "OMSGallery/ContainerInsights",<br>    "publisher": "Microsoft"<br>  },<br>  {<br>    "product": "OMSGallery/Security",<br>    "publisher": "Microsoft"<br>  },<br>  {<br>    "product": "OMSGallery/SecurityInsights",<br>    "publisher": "Microsoft"<br>  },<br>  {<br>    "product": "OMSGallery/ServiceMap",<br>    "publisher": "Microsoft"<br>  },<br>  {<br>    "product": "OMSGallery/SQLAdvancedThreatProtection",<br>    "publisher": "Microsoft"<br>  },<br>  {<br>    "product": "OMSGallery/SQLAssessment",<br>    "publisher": "Microsoft"<br>  },<br>  {<br>    "product": "OMSGallery/SQLVulnerabilityAssessment",<br>    "publisher": "Microsoft"<br>  },<br>  {<br>    "product": "OMSGallery/Updates",<br>    "publisher": "Microsoft"<br>  },<br>  {<br>    "product": "OMSGallery/VMInsights",<br>    "publisher": "Microsoft"<br>  }<br>]</pre> | no |
