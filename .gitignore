@@ -83,3 +83,5 @@ crash.log
 override.tf
 override.tf.json
 terraform.rc
+avm.tflint.merged.hcl
+avm.tflint_example.merged.hcl
