@@ -5,7 +5,7 @@ go 1.20
 require (
 	github.com/Azure/terraform-module-test-helper v0.17.0
 	github.com/gruntwork-io/terratest v0.46.11
-	github.com/stretchr/testify v1.8.4
+	github.com/stretchr/testify v1.9.0
 )
 
 require (
