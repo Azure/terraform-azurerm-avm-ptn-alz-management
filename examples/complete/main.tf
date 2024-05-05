@@ -72,9 +72,6 @@ module "management" {
     environment = "dev"
   }
 
-  tracing_tags_enabled = true
-  tracing_tags_prefix  = "alz_"
-
   depends_on = [
     azurerm_resource_group.management,
     azurerm_user_assigned_identity.management
