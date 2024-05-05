@@ -1,11 +1,15 @@
+resource "random_id" "id" {
+  byte_length = 4
+}
+
 resource "azurerm_resource_group" "management" {
   location = "westeurope"
-  name     = "rg-terraform-azure-complete"
+  name     = "rg-terraform-${random_id.id.hex}"
 }
 
 resource "azurerm_user_assigned_identity" "management" {
   location            = azurerm_resource_group.management.location
-  name                = "id-terraform-azure"
+  name                = "id-terraform-${random_id.id.hex}"
   resource_group_name = azurerm_resource_group.management.name
 
   depends_on = [
