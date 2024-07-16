@@ -36,7 +36,7 @@ output "log_analytics_workspace" {
 output "resource_group" {
   description = "A curated output of the Azure Resource Group."
   value = {
-    id   = local.resource_group_id
+    id   = local.resource_group_resource_id
     name = local.resource_group_name
   }
 }
