@@ -49,7 +49,6 @@ The following resources are used by this module:
 - [azapi_resource.sentinel_onboarding_state](https://registry.terraform.io/providers/Azure/azapi/latest/docs/resources/resource) (resource)
 - [azurerm_automation_account.management](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/automation_account) (resource)
 - [azurerm_log_analytics_linked_service.management](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/log_analytics_linked_service) (resource)
-- [azurerm_log_analytics_solution.management](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/log_analytics_solution) (resource)
 - [azurerm_log_analytics_workspace.management](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/log_analytics_workspace) (resource)
 - [azurerm_resource_group.management](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) (resource)
 - [azurerm_user_assigned_identity.management](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/user_assigned_identity) (resource)
@@ -216,30 +215,6 @@ Description: A boolean flag to determine whether to deploy the Azure Automation 
 Type: `bool`
 
 Default: `true`
-
-### <a name="input_log_analytics_solution_plans"></a> [log\_analytics\_solution\_plans](#input\_log\_analytics\_solution\_plans)
-
-Description: The Log Analytics Solution Plans to create.
-
-Type:
-
-```hcl
-list(object({
-    product   = string
-    publisher = optional(string, "Microsoft")
-  }))
-```
-
-Default:
-
-```json
-[
-  {
-    "product": "OMSGallery/SecurityInsights",
-    "publisher": "Microsoft"
-  }
-]
-```
 
 ### <a name="input_log_analytics_workspace_allow_resource_only_permissions"></a> [log\_analytics\_workspace\_allow\_resource\_only\_permissions](#input\_log\_analytics\_workspace\_allow\_resource\_only\_permissions)
 
