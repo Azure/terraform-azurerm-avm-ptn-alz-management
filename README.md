@@ -46,6 +46,7 @@ The following requirements are needed by this module:
 The following resources are used by this module:
 
 - [azapi_resource.data_collection_rule](https://registry.terraform.io/providers/Azure/azapi/latest/docs/resources/resource) (resource)
+- [azapi_resource.sentinel_onboarding_state](https://registry.terraform.io/providers/Azure/azapi/latest/docs/resources/resource) (resource)
 - [azurerm_automation_account.management](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/automation_account) (resource)
 - [azurerm_log_analytics_linked_service.management](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/log_analytics_linked_service) (resource)
 - [azurerm_log_analytics_solution.management](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/log_analytics_solution) (resource)
@@ -55,7 +56,6 @@ The following resources are used by this module:
 - [modtm_telemetry.telemetry](https://registry.terraform.io/providers/azure/modtm/latest/docs/resources/telemetry) (resource)
 - [random_uuid.telemetry](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/uuid) (resource)
 - [azurerm_client_config.telemetry](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/client_config) (data source)
-- [azurerm_resource_group.management](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/resource_group) (data source)
 - [modtm_module_source.telemetry](https://registry.terraform.io/providers/azure/modtm/latest/docs/data-sources/module_source) (data source)
 
 <!-- markdownlint-disable MD013 -->
@@ -235,51 +235,7 @@ Default:
 ```json
 [
   {
-    "product": "OMSGallery/AgentHealthAssessment",
-    "publisher": "Microsoft"
-  },
-  {
-    "product": "OMSGallery/AntiMalware",
-    "publisher": "Microsoft"
-  },
-  {
-    "product": "OMSGallery/ChangeTracking",
-    "publisher": "Microsoft"
-  },
-  {
-    "product": "OMSGallery/ContainerInsights",
-    "publisher": "Microsoft"
-  },
-  {
-    "product": "OMSGallery/Security",
-    "publisher": "Microsoft"
-  },
-  {
     "product": "OMSGallery/SecurityInsights",
-    "publisher": "Microsoft"
-  },
-  {
-    "product": "OMSGallery/ServiceMap",
-    "publisher": "Microsoft"
-  },
-  {
-    "product": "OMSGallery/SQLAdvancedThreatProtection",
-    "publisher": "Microsoft"
-  },
-  {
-    "product": "OMSGallery/SQLAssessment",
-    "publisher": "Microsoft"
-  },
-  {
-    "product": "OMSGallery/SQLVulnerabilityAssessment",
-    "publisher": "Microsoft"
-  },
-  {
-    "product": "OMSGallery/Updates",
-    "publisher": "Microsoft"
-  },
-  {
-    "product": "OMSGallery/VMInsights",
     "publisher": "Microsoft"
   }
 ]
@@ -360,6 +316,14 @@ Default: `"PerGB2018"`
 ### <a name="input_resource_group_creation_enabled"></a> [resource\_group\_creation\_enabled](#input\_resource\_group\_creation\_enabled)
 
 Description: A boolean flag to determine whether to deploy the Azure Resource Group or not.
+
+Type: `bool`
+
+Default: `true`
+
+### <a name="input_sentinel_enabled"></a> [sentinel\_enabled](#input\_sentinel\_enabled)
+
+Description: A boolean flag to determine whether to deploy the Sentinel onboardingStates configuration or not.
 
 Type: `bool`
 
