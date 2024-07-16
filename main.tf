@@ -61,24 +61,11 @@ resource "azurerm_log_analytics_linked_service" "management" {
   write_access_id     = null
 }
 
-resource "azurerm_log_analytics_solution" "management" {
-  for_each = { for plan in toset(var.log_analytics_solution_plans) : "${plan.publisher}/${plan.product}" => plan }
-
-  location              = var.location
-  resource_group_name   = local.resource_group_name
-  solution_name         = basename(each.value.product)
-  workspace_name        = var.log_analytics_workspace_name
-  workspace_resource_id = azurerm_log_analytics_workspace.management.id
-  tags                  = var.tags
-
-  plan {
-    product   = each.value.product
-    publisher = each.value.publisher
+removed {
+  from = azurerm_log_analytics_linked_service.management["Microsoft/OMSGallery/SecurityInsights"]
+  lifecycle {
+    destroy = false
   }
-
-  depends_on = [
-    azurerm_log_analytics_linked_service.management,
-  ]
 }
 
 resource "azurerm_user_assigned_identity" "management" {

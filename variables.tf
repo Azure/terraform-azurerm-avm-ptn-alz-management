@@ -119,21 +119,6 @@ variable "linked_automation_account_creation_enabled" {
   nullable    = false
 }
 
-variable "log_analytics_solution_plans" {
-  type = list(object({
-    product   = string
-    publisher = optional(string, "Microsoft")
-  }))
-  default = [
-    {
-      product   = "OMSGallery/SecurityInsights"
-      publisher = "Microsoft"
-    },
-  ]
-  description = "The Log Analytics Solution Plans to create."
-  nullable    = false
-}
-
 variable "log_analytics_workspace_allow_resource_only_permissions" {
   type        = bool
   default     = true
