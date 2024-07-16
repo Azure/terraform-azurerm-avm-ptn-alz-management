@@ -126,51 +126,7 @@ variable "log_analytics_solution_plans" {
   }))
   default = [
     {
-      product   = "OMSGallery/AgentHealthAssessment"
-      publisher = "Microsoft"
-    },
-    {
-      product   = "OMSGallery/AntiMalware"
-      publisher = "Microsoft"
-    },
-    {
-      product   = "OMSGallery/ChangeTracking"
-      publisher = "Microsoft"
-    },
-    {
-      product   = "OMSGallery/ContainerInsights"
-      publisher = "Microsoft"
-    },
-    {
-      product   = "OMSGallery/Security"
-      publisher = "Microsoft"
-    },
-    {
       product   = "OMSGallery/SecurityInsights"
-      publisher = "Microsoft"
-    },
-    {
-      product   = "OMSGallery/ServiceMap"
-      publisher = "Microsoft"
-    },
-    {
-      product   = "OMSGallery/SQLAdvancedThreatProtection"
-      publisher = "Microsoft"
-    },
-    {
-      product   = "OMSGallery/SQLAssessment"
-      publisher = "Microsoft"
-    },
-    {
-      product   = "OMSGallery/SQLVulnerabilityAssessment"
-      publisher = "Microsoft"
-    },
-    {
-      product   = "OMSGallery/Updates"
-      publisher = "Microsoft"
-    },
-    {
-      product   = "OMSGallery/VMInsights"
       publisher = "Microsoft"
     },
   ]
@@ -266,4 +222,11 @@ variable "user_assigned_managed_identities" {
     }
   }
   description = "Enables customisation of the user assigned managed identities."
+}
+
+variable "sentinel_enabled" {
+  type        = bool
+  default     = true
+  description = "A boolean flag to determine whether to deploy the Sentinel onboardingStates configuration or not."
+  nullable    = false
 }

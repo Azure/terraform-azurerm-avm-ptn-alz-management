@@ -7,12 +7,6 @@ resource "azurerm_resource_group" "management" {
   tags     = var.tags
 }
 
-data "azurerm_resource_group" "management" {
-  count = var.resource_group_creation_enabled ? 0 : 1
-
-  name = var.resource_group_name
-}
-
 resource "azurerm_log_analytics_workspace" "management" {
   location                           = var.location
   name                               = var.log_analytics_workspace_name
@@ -106,4 +100,16 @@ resource "azapi_resource" "data_collection_rule" {
   parent_id                 = local.resource_group_resource_id
   schema_validation_enabled = each.value.schema_validation_enabled
   tags                      = each.value.tags
+}
+
+resource "azapi_resource" "sentinel_onboarding_state" {
+  type      = "Microsoft.SecurityInsights/onboardingStates@2024-03-01"
+  name      = default
+  parent_id = azurerm_log_analytics_workspace.management.id
+  location  = var.location
+  body = {
+    properties = {
+      customerManagedKey = var.log_analytics_workspace_cmk_for_query_forced
+    }
+  }
 }
