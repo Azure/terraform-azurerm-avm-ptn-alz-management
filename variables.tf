@@ -6,6 +6,7 @@ variable "automation_account_name" {
 variable "location" {
   type        = string
   description = "The Azure region where the resources will be deployed."
+  nullable    = false
 }
 
 variable "log_analytics_workspace_name" {
@@ -62,6 +63,42 @@ variable "automation_account_sku_name" {
   default     = "Basic"
   description = "The name of the SKU for the Azure Automation Account to create."
   nullable    = false
+}
+
+variable "data_collection_rules" {
+  type = object({
+    change_tracking = object({
+      enabled  = optional(bool, true)
+      name     = string
+      location = optional(string, null)
+      tags     = optional(map(string), null)
+    })
+    vm_insights = object({
+      enabled  = optional(bool, true)
+      name     = string
+      location = optional(string, null)
+      tags     = optional(map(string), null)
+    })
+    defender_sql = object({
+      enabled                                                = optional(bool, true)
+      name                                                   = string
+      location                                               = optional(string, null)
+      tags                                                   = optional(map(string), null)
+      enable_collection_of_sql_queries_for_security_research = optional(bool, false)
+    })
+  })
+  default = {
+    change_tracking = {
+      name = "dcr-change-tracking"
+    }
+    vm_insights = {
+      name = "dcr-vm-insights"
+    }
+    defender_sql = {
+      name = "dcr-defender-sql"
+    }
+  }
+  description = "Enables customisation of the data collection rules."
 }
 
 variable "enable_telemetry" {
@@ -212,4 +249,21 @@ variable "tags" {
   type        = map(string)
   default     = null
   description = "A map of tags to apply to the resources created."
+}
+
+variable "user_assigned_managed_identities" {
+  type = object({
+    ama = object({
+      enabled  = optional(bool, true)
+      name     = string
+      location = optional(string, null)
+      tags     = optional(map(string), null)
+    })
+  })
+  default = {
+    ama = {
+      name = "uami-ama"
+    }
+  }
+  description = "Enables customisation of the user assigned managed identities."
 }

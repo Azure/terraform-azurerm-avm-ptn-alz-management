@@ -14,6 +14,14 @@ output "automation_account" {
   }
 }
 
+output "data_collection_rule_ids" {
+  description = "Data Collection Rule Resource Ids."
+  value = { for key, value in azapi_resource.data_collection_rule : key => {
+    id = value.id
+    }
+  }
+}
+
 output "log_analytics_workspace" {
   description = "A curated output of the Log Analytics Workspace."
   value = {
@@ -28,7 +36,20 @@ output "log_analytics_workspace" {
 output "resource_group" {
   description = "A curated output of the Azure Resource Group."
   value = {
-    id   = try(azurerm_resource_group.management[0].id, null)
-    name = try(azurerm_resource_group.management[0].name, null)
+    id   = local.resource_group_id
+    name = local.resource_group_name
+  }
+}
+
+output "resource_id" {
+  description = "The resource ID of the Log Analytics Workspace."
+  value       = azurerm_log_analytics_workspace.management.id
+}
+
+output "user_assigned_identity_ids" {
+  description = "User assigned identity IDs."
+  value = { for key, value in azurerm_user_assigned_identity.management : key => {
+    id = value.id
+    }
   }
 }

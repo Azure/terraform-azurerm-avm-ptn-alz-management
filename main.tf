@@ -7,10 +7,16 @@ resource "azurerm_resource_group" "management" {
   tags     = var.tags
 }
 
+data "azurerm_resource_group" "management" {
+  count = var.resource_group_creation_enabled ? 0 : 1
+
+  name = var.resource_group_name
+}
+
 resource "azurerm_log_analytics_workspace" "management" {
   location                           = var.location
   name                               = var.log_analytics_workspace_name
-  resource_group_name                = var.resource_group_name
+  resource_group_name                = local.resource_group_name
   allow_resource_only_permissions    = var.log_analytics_workspace_allow_resource_only_permissions
   cmk_for_query_forced               = var.log_analytics_workspace_cmk_for_query_forced
   daily_quota_gb                     = var.log_analytics_workspace_daily_quota_gb
@@ -21,19 +27,14 @@ resource "azurerm_log_analytics_workspace" "management" {
   retention_in_days                  = var.log_analytics_workspace_retention_in_days
   sku                                = var.log_analytics_workspace_sku
   tags                               = var.tags
-
-  depends_on = [
-    azurerm_resource_group.management,
-  ]
 }
-
 
 resource "azurerm_automation_account" "management" {
   count = var.linked_automation_account_creation_enabled ? 1 : 0
 
   location                      = coalesce(var.automation_account_location, var.location)
   name                          = var.automation_account_name
-  resource_group_name           = var.resource_group_name
+  resource_group_name           = local.resource_group_name
   sku_name                      = var.automation_account_sku_name
   local_authentication_enabled  = var.automation_account_local_authentication_enabled
   public_network_access_enabled = var.automation_account_public_network_access_enabled
@@ -55,16 +56,12 @@ resource "azurerm_automation_account" "management" {
       identity_ids = var.automation_account_identity.identity_ids
     }
   }
-
-  depends_on = [
-    azurerm_resource_group.management,
-  ]
 }
 
 resource "azurerm_log_analytics_linked_service" "management" {
   count = var.linked_automation_account_creation_enabled ? 1 : 0
 
-  resource_group_name = var.resource_group_name
+  resource_group_name = local.resource_group_name
   workspace_id        = azurerm_log_analytics_workspace.management.id
   read_access_id      = azurerm_automation_account.management[0].id
   write_access_id     = null
@@ -74,7 +71,7 @@ resource "azurerm_log_analytics_solution" "management" {
   for_each = { for plan in toset(var.log_analytics_solution_plans) : "${plan.publisher}/${plan.product}" => plan }
 
   location              = var.location
-  resource_group_name   = var.resource_group_name
+  resource_group_name   = local.resource_group_name
   solution_name         = basename(each.value.product)
   workspace_name        = var.log_analytics_workspace_name
   workspace_resource_id = azurerm_log_analytics_workspace.management.id
@@ -88,4 +85,25 @@ resource "azurerm_log_analytics_solution" "management" {
   depends_on = [
     azurerm_log_analytics_linked_service.management,
   ]
+}
+
+resource "azurerm_user_assigned_identity" "management" {
+  for_each = local.user_assigned_managed_identities
+
+  location            = each.value.location
+  name                = each.value.name
+  resource_group_name = local.resource_group_name
+  tags                = each.value.tags
+}
+
+resource "azapi_resource" "data_collection_rule" {
+  for_each = local.data_collection_rules
+
+  type                      = each.value.type
+  body                      = each.value.body
+  location                  = each.value.location
+  name                      = each.value.name
+  parent_id                 = local.resource_group_resource_id
+  schema_validation_enabled = each.value.schema_validation_enabled
+  tags                      = each.value.tags
 }
