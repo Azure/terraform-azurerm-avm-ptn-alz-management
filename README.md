@@ -33,7 +33,7 @@ The following requirements are needed by this module:
 
 - <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) (~> 1.8)
 
-- <a name="requirement_azapi"></a> [azapi](#requirement\_azapi) (~> 1.13)
+- <a name="requirement_azapi"></a> [azapi](#requirement\_azapi) (~> 1.14)
 
 - <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) (~> 3.107)
 
@@ -46,6 +46,7 @@ The following requirements are needed by this module:
 The following resources are used by this module:
 
 - [azapi_resource.data_collection_rule](https://registry.terraform.io/providers/Azure/azapi/latest/docs/resources/resource) (resource)
+- [azapi_resource.sentinel_onboarding](https://registry.terraform.io/providers/Azure/azapi/latest/docs/resources/resource) (resource)
 - [azurerm_automation_account.management](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/automation_account) (resource)
 - [azurerm_log_analytics_linked_service.management](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/log_analytics_linked_service) (resource)
 - [azurerm_log_analytics_solution.management](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/log_analytics_solution) (resource)
@@ -219,7 +220,7 @@ Default: `true`
 
 ### <a name="input_log_analytics_solution_plans"></a> [log\_analytics\_solution\_plans](#input\_log\_analytics\_solution\_plans)
 
-Description: The Log Analytics Solution Plans to create.
+Description: The Log Analytics Solution Plans to create. Do not add the SecurityInsights solution plan here, this deployment method is deprecated. Instead refer to
 
 Type:
 
@@ -235,47 +236,7 @@ Default:
 ```json
 [
   {
-    "product": "OMSGallery/AgentHealthAssessment",
-    "publisher": "Microsoft"
-  },
-  {
-    "product": "OMSGallery/AntiMalware",
-    "publisher": "Microsoft"
-  },
-  {
-    "product": "OMSGallery/ChangeTracking",
-    "publisher": "Microsoft"
-  },
-  {
     "product": "OMSGallery/ContainerInsights",
-    "publisher": "Microsoft"
-  },
-  {
-    "product": "OMSGallery/Security",
-    "publisher": "Microsoft"
-  },
-  {
-    "product": "OMSGallery/SecurityInsights",
-    "publisher": "Microsoft"
-  },
-  {
-    "product": "OMSGallery/ServiceMap",
-    "publisher": "Microsoft"
-  },
-  {
-    "product": "OMSGallery/SQLAdvancedThreatProtection",
-    "publisher": "Microsoft"
-  },
-  {
-    "product": "OMSGallery/SQLAssessment",
-    "publisher": "Microsoft"
-  },
-  {
-    "product": "OMSGallery/SQLVulnerabilityAssessment",
-    "publisher": "Microsoft"
-  },
-  {
-    "product": "OMSGallery/Updates",
     "publisher": "Microsoft"
   },
   {
@@ -364,6 +325,21 @@ Description: A boolean flag to determine whether to deploy the Azure Resource Gr
 Type: `bool`
 
 Default: `true`
+
+### <a name="input_sentinel_onboarding"></a> [sentinel\_onboarding](#input\_sentinel\_onboarding)
+
+Description: Enables customisation of the Sentinel onboarding. Set to null to disable.
+
+Type:
+
+```hcl
+object({
+    name                         = optional(string, "default")
+    customer_managed_key_enabled = optional(bool, false)
+  })
+```
+
+Default: `{}`
 
 ### <a name="input_tags"></a> [tags](#input\_tags)
 

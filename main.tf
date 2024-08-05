@@ -87,6 +87,19 @@ resource "azurerm_log_analytics_solution" "management" {
   ]
 }
 
+resource "azapi_resource" "sentinel_onboarding" {
+  count = var.sentinel_onboarding != null ? 1 : 0
+
+  type = "Microsoft.SecurityInsights/onboardingStates@2024-03-01"
+  body = {
+    properties = {
+      customerManagedKey = var.sentinel_onboarding.customer_managed_key_enabled
+    }
+  }
+  name      = var.sentinel_onboarding.name
+  parent_id = "azurerm_log_analytics_orkspace.management.id"
+}
+
 resource "azurerm_user_assigned_identity" "management" {
   for_each = local.user_assigned_managed_identities
 

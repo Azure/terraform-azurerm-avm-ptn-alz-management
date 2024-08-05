@@ -126,47 +126,7 @@ variable "log_analytics_solution_plans" {
   }))
   default = [
     {
-      product   = "OMSGallery/AgentHealthAssessment"
-      publisher = "Microsoft"
-    },
-    {
-      product   = "OMSGallery/AntiMalware"
-      publisher = "Microsoft"
-    },
-    {
-      product   = "OMSGallery/ChangeTracking"
-      publisher = "Microsoft"
-    },
-    {
       product   = "OMSGallery/ContainerInsights"
-      publisher = "Microsoft"
-    },
-    {
-      product   = "OMSGallery/Security"
-      publisher = "Microsoft"
-    },
-    {
-      product   = "OMSGallery/SecurityInsights"
-      publisher = "Microsoft"
-    },
-    {
-      product   = "OMSGallery/ServiceMap"
-      publisher = "Microsoft"
-    },
-    {
-      product   = "OMSGallery/SQLAdvancedThreatProtection"
-      publisher = "Microsoft"
-    },
-    {
-      product   = "OMSGallery/SQLAssessment"
-      publisher = "Microsoft"
-    },
-    {
-      product   = "OMSGallery/SQLVulnerabilityAssessment"
-      publisher = "Microsoft"
-    },
-    {
-      product   = "OMSGallery/Updates"
       publisher = "Microsoft"
     },
     {
@@ -174,7 +134,7 @@ variable "log_analytics_solution_plans" {
       publisher = "Microsoft"
     },
   ]
-  description = "The Log Analytics Solution Plans to create."
+  description = "The Log Analytics Solution Plans to create. Do not add the SecurityInsights solution plan here, this deployment method is deprecated. Instead refer to"
   nullable    = false
 }
 
@@ -243,6 +203,15 @@ variable "resource_group_creation_enabled" {
   default     = true
   description = "A boolean flag to determine whether to deploy the Azure Resource Group or not."
   nullable    = false
+}
+
+variable "sentinel_onboarding" {
+  type = object({
+    name                         = optional(string, "default")
+    customer_managed_key_enabled = optional(bool, false)
+  })
+  default     = {}
+  description = "Enables customisation of the Sentinel onboarding. Set to null to disable."
 }
 
 variable "tags" {
