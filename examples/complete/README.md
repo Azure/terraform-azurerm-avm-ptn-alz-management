@@ -55,14 +55,6 @@ module "management" {
       product   = "OMSGallery/ContainerInsights"
       publisher = "Microsoft"
     },
-    {
-      product   = "OMSGallery/Security"
-      publisher = "Microsoft"
-    },
-    {
-      product   = "OMSGallery/SecurityInsights"
-      publisher = "Microsoft"
-    }
   ]
 
   log_analytics_workspace_allow_resource_only_permissions    = true
