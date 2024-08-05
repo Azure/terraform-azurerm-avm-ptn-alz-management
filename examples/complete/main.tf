@@ -11,19 +11,16 @@ resource "azurerm_user_assigned_identity" "management" {
   location            = azurerm_resource_group.management.location
   name                = "id-terraform-${random_id.id.hex}"
   resource_group_name = azurerm_resource_group.management.name
-
-  depends_on = [
-    azurerm_resource_group.management
-  ]
 }
 
 module "management" {
   source = "../.."
 
-  automation_account_name      = "aa-terraform-azure"
-  location                     = "westeurope"
-  log_analytics_workspace_name = "law-terraform-azure"
-  resource_group_name          = azurerm_resource_group.management.name
+  automation_account_name         = "aa-terraform-azure"
+  location                        = "westeurope"
+  log_analytics_workspace_name    = "law-terraform-azure"
+  resource_group_name             = azurerm_resource_group.management.name
+  resource_group_creation_enabled = false
 
   automation_account_identity = {
     type         = "SystemAssigned, UserAssigned"
@@ -52,14 +49,6 @@ module "management" {
       product   = "OMSGallery/ContainerInsights"
       publisher = "Microsoft"
     },
-    {
-      product   = "OMSGallery/Security"
-      publisher = "Microsoft"
-    },
-    {
-      product   = "OMSGallery/SecurityInsights"
-      publisher = "Microsoft"
-    }
   ]
 
   log_analytics_workspace_allow_resource_only_permissions    = true
@@ -70,14 +59,30 @@ module "management" {
   log_analytics_workspace_reservation_capacity_in_gb_per_day = 200
   log_analytics_workspace_retention_in_days                  = 50
   log_analytics_workspace_sku                                = "CapacityReservation"
-  resource_group_creation_enabled                            = false
+
+  user_assigned_managed_identities = {
+    ama = {
+      name = "uami-ama-${random_id.id.hex}"
+    }
+  }
+
+  data_collection_rules = {
+    change_tracking = {
+      name     = "dcr-change-tracking-${random_id.id.hex}"
+      location = azurerm_resource_group.management.location
+      tags = {
+        testing = "123"
+      }
+    }
+    vm_insights = {
+      name = "dcr-vm-insights-${random_id.id.hex}"
+    }
+    defender_sql = {
+      name = "dcr-defender-sql-${random_id.id.hex}"
+    }
+  }
 
   tags = {
     environment = "dev"
   }
-
-  depends_on = [
-    azurerm_resource_group.management,
-    azurerm_user_assigned_identity.management
-  ]
 }

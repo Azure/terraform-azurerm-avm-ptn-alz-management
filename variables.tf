@@ -6,6 +6,7 @@ variable "automation_account_name" {
 variable "location" {
   type        = string
   description = "The Azure region where the resources will be deployed."
+  nullable    = false
 }
 
 variable "log_analytics_workspace_name" {
@@ -64,6 +65,42 @@ variable "automation_account_sku_name" {
   nullable    = false
 }
 
+variable "data_collection_rules" {
+  type = object({
+    change_tracking = object({
+      enabled  = optional(bool, true)
+      name     = string
+      location = optional(string, null)
+      tags     = optional(map(string), null)
+    })
+    vm_insights = object({
+      enabled  = optional(bool, true)
+      name     = string
+      location = optional(string, null)
+      tags     = optional(map(string), null)
+    })
+    defender_sql = object({
+      enabled                                                = optional(bool, true)
+      name                                                   = string
+      location                                               = optional(string, null)
+      tags                                                   = optional(map(string), null)
+      enable_collection_of_sql_queries_for_security_research = optional(bool, false)
+    })
+  })
+  default = {
+    change_tracking = {
+      name = "dcr-change-tracking"
+    }
+    vm_insights = {
+      name = "dcr-vm-insights"
+    }
+    defender_sql = {
+      name = "dcr-defender-sql"
+    }
+  }
+  description = "Enables customisation of the data collection rules."
+}
+
 variable "enable_telemetry" {
   type        = bool
   default     = true
@@ -89,47 +126,7 @@ variable "log_analytics_solution_plans" {
   }))
   default = [
     {
-      product   = "OMSGallery/AgentHealthAssessment"
-      publisher = "Microsoft"
-    },
-    {
-      product   = "OMSGallery/AntiMalware"
-      publisher = "Microsoft"
-    },
-    {
-      product   = "OMSGallery/ChangeTracking"
-      publisher = "Microsoft"
-    },
-    {
       product   = "OMSGallery/ContainerInsights"
-      publisher = "Microsoft"
-    },
-    {
-      product   = "OMSGallery/Security"
-      publisher = "Microsoft"
-    },
-    {
-      product   = "OMSGallery/SecurityInsights"
-      publisher = "Microsoft"
-    },
-    {
-      product   = "OMSGallery/ServiceMap"
-      publisher = "Microsoft"
-    },
-    {
-      product   = "OMSGallery/SQLAdvancedThreatProtection"
-      publisher = "Microsoft"
-    },
-    {
-      product   = "OMSGallery/SQLAssessment"
-      publisher = "Microsoft"
-    },
-    {
-      product   = "OMSGallery/SQLVulnerabilityAssessment"
-      publisher = "Microsoft"
-    },
-    {
-      product   = "OMSGallery/Updates"
       publisher = "Microsoft"
     },
     {
@@ -137,7 +134,7 @@ variable "log_analytics_solution_plans" {
       publisher = "Microsoft"
     },
   ]
-  description = "The Log Analytics Solution Plans to create."
+  description = "The Log Analytics Solution Plans to create. Do not add the SecurityInsights solution plan here, this deployment method is deprecated. Instead refer to"
   nullable    = false
 }
 
@@ -208,8 +205,34 @@ variable "resource_group_creation_enabled" {
   nullable    = false
 }
 
+variable "sentinel_onboarding" {
+  type = object({
+    name                         = optional(string, "default")
+    customer_managed_key_enabled = optional(bool, false)
+  })
+  default     = {}
+  description = "Enables customisation of the Sentinel onboarding. Set to null to disable."
+}
+
 variable "tags" {
   type        = map(string)
   default     = null
   description = "A map of tags to apply to the resources created."
+}
+
+variable "user_assigned_managed_identities" {
+  type = object({
+    ama = object({
+      enabled  = optional(bool, true)
+      name     = string
+      location = optional(string, null)
+      tags     = optional(map(string), null)
+    })
+  })
+  default = {
+    ama = {
+      name = "uami-ama"
+    }
+  }
+  description = "Enables customisation of the user assigned managed identities."
 }
