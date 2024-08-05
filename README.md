@@ -1,7 +1,7 @@
 <!-- BEGIN_TF_DOCS -->
-# terraform-azurerm-avm-ptn-alz-management
+# Azure Landing Zones Management Resources AVM Module
 
-This module deploys a Log Analytics Workspace in Azure with Log Analytics Solutions and a linked Azure Automation Account.
+This module deploys the management resource for Azure Landings Zones.
 
 ## Features
 
@@ -9,6 +9,8 @@ This module deploys a Log Analytics Workspace in Azure with Log Analytics Soluti
 - Opitional deployment of Azure Automation Account.
 - Optional deployment of Azure Resource Group.
 - Customizable Log Analytics Solutions.
+- Optional deployment of Data Collections Rules.
+- Optional deployment of User Assigned Managed Identity.
 
 ## Example
 
@@ -29,25 +31,32 @@ module "avm-ptn-alz-management" {
 
 The following requirements are needed by this module:
 
-- <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) (>= 1.3)
+- <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) (~> 1.8)
 
-- <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) (>= 3.0, < 4.0)
+- <a name="requirement_azapi"></a> [azapi](#requirement\_azapi) (~> 1.13)
 
-- <a name="requirement_random"></a> [random](#requirement\_random) (>= 3.5.0)
+- <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) (~> 3.107)
+
+- <a name="requirement_modtm"></a> [modtm](#requirement\_modtm) (~> 0.3)
+
+- <a name="requirement_random"></a> [random](#requirement\_random) (~> 3.6)
 
 ## Resources
 
 The following resources are used by this module:
 
+- [azapi_resource.data_collection_rule](https://registry.terraform.io/providers/Azure/azapi/latest/docs/resources/resource) (resource)
 - [azurerm_automation_account.management](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/automation_account) (resource)
 - [azurerm_log_analytics_linked_service.management](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/log_analytics_linked_service) (resource)
 - [azurerm_log_analytics_solution.management](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/log_analytics_solution) (resource)
 - [azurerm_log_analytics_workspace.management](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/log_analytics_workspace) (resource)
 - [azurerm_resource_group.management](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) (resource)
-- [modtm_telemetry.telemetry](https://registry.terraform.io/providers/hashicorp/modtm/latest/docs/resources/telemetry) (resource)
+- [azurerm_user_assigned_identity.management](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/user_assigned_identity) (resource)
+- [modtm_telemetry.telemetry](https://registry.terraform.io/providers/azure/modtm/latest/docs/resources/telemetry) (resource)
 - [random_uuid.telemetry](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/uuid) (resource)
 - [azurerm_client_config.telemetry](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/client_config) (data source)
-- [modtm_module_source.telemetry](https://registry.terraform.io/providers/hashicorp/modtm/latest/docs/data-sources/module_source) (data source)
+- [azurerm_resource_group.management](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/resource_group) (data source)
+- [modtm_module_source.telemetry](https://registry.terraform.io/providers/azure/modtm/latest/docs/data-sources/module_source) (data source)
 
 <!-- markdownlint-disable MD013 -->
 ## Required Inputs
@@ -143,6 +152,52 @@ Description: The name of the SKU for the Azure Automation Account to create.
 Type: `string`
 
 Default: `"Basic"`
+
+### <a name="input_data_collection_rules"></a> [data\_collection\_rules](#input\_data\_collection\_rules)
+
+Description: Enables customisation of the data collection rules.
+
+Type:
+
+```hcl
+object({
+    change_tracking = object({
+      enabled  = optional(bool, true)
+      name     = string
+      location = optional(string, null)
+      tags     = optional(map(string), null)
+    })
+    vm_insights = object({
+      enabled  = optional(bool, true)
+      name     = string
+      location = optional(string, null)
+      tags     = optional(map(string), null)
+    })
+    defender_sql = object({
+      enabled                                                = optional(bool, true)
+      name                                                   = string
+      location                                               = optional(string, null)
+      tags                                                   = optional(map(string), null)
+      enable_collection_of_sql_queries_for_security_research = optional(bool, false)
+    })
+  })
+```
+
+Default:
+
+```json
+{
+  "change_tracking": {
+    "name": "dcr-change-tracking"
+  },
+  "defender_sql": {
+    "name": "dcr-defender-sql"
+  },
+  "vm_insights": {
+    "name": "dcr-vm-insights"
+  }
+}
+```
 
 ### <a name="input_enable_telemetry"></a> [enable\_telemetry](#input\_enable\_telemetry)
 
@@ -318,6 +373,33 @@ Type: `map(string)`
 
 Default: `null`
 
+### <a name="input_user_assigned_managed_identities"></a> [user\_assigned\_managed\_identities](#input\_user\_assigned\_managed\_identities)
+
+Description: Enables customisation of the user assigned managed identities.
+
+Type:
+
+```hcl
+object({
+    ama = object({
+      enabled  = optional(bool, true)
+      name     = string
+      location = optional(string, null)
+      tags     = optional(map(string), null)
+    })
+  })
+```
+
+Default:
+
+```json
+{
+  "ama": {
+    "name": "uami-ama"
+  }
+}
+```
+
 ## Outputs
 
 The following outputs are exported:
@@ -326,6 +408,10 @@ The following outputs are exported:
 
 Description: A curated output of the Azure Automation Account.
 
+### <a name="output_data_collection_rule_ids"></a> [data\_collection\_rule\_ids](#output\_data\_collection\_rule\_ids)
+
+Description: Data Collection Rule Resource Ids.
+
 ### <a name="output_log_analytics_workspace"></a> [log\_analytics\_workspace](#output\_log\_analytics\_workspace)
 
 Description: A curated output of the Log Analytics Workspace.
@@ -333,6 +419,14 @@ Description: A curated output of the Log Analytics Workspace.
 ### <a name="output_resource_group"></a> [resource\_group](#output\_resource\_group)
 
 Description: A curated output of the Azure Resource Group.
+
+### <a name="output_resource_id"></a> [resource\_id](#output\_resource\_id)
+
+Description: The resource ID of the Log Analytics Workspace.
+
+### <a name="output_user_assigned_identity_ids"></a> [user\_assigned\_identity\_ids](#output\_user\_assigned\_identity\_ids)
+
+Description: User assigned identity IDs.
 
 ## Modules
 

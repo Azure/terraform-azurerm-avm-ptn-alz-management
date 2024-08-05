@@ -1,6 +1,6 @@
-# terraform-azurerm-avm-ptn-alz-management
+# Azure Landing Zones Management Resources AVM Module
 
-This module deploys a Log Analytics Workspace in Azure with Log Analytics Solutions and a linked Azure Automation Account.
+This module deploys the management resource for Azure Landings Zones.
 
 ## Features
 
@@ -8,6 +8,8 @@ This module deploys a Log Analytics Workspace in Azure with Log Analytics Soluti
 - Opitional deployment of Azure Automation Account.
 - Optional deployment of Azure Resource Group.
 - Customizable Log Analytics Solutions.
+- Optional deployment of Data Collections Rules.
+- Optional deployment of User Assigned Managed Identity.
 
 ## Example
 
