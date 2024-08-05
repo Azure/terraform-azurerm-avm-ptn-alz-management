@@ -97,7 +97,7 @@ resource "azapi_resource" "sentinel_onboarding" {
     }
   }
   name      = var.sentinel_onboarding.name
-  parent_id = "azurerm_log_analytics_orkspace.management.id"
+  parent_id = azurerm_log_analytics_workspace.management.id
 }
 
 resource "azurerm_user_assigned_identity" "management" {
