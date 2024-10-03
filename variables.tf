@@ -19,17 +19,6 @@ variable "resource_group_name" {
   description = "The name of the Azure Resource Group where the resources will be created."
 }
 
-variable "subscription_id" {
-  type        = string
-  description = "The Azure Subscription ID to use for the resources. Leave as `null` to use the default subscription."
-  default     = null
-
-  validation {
-    error_message = "Subscription id must `null` or a valid UUID."
-    condition     = var.subscription_id == null ? true : can(regex("^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$", var.subscription_id))
-  }
-}
-
 variable "automation_account_encryption" {
   type = object({
     key_vault_key_id          = string
@@ -145,7 +134,7 @@ variable "log_analytics_solution_plans" {
       publisher = "Microsoft"
     },
   ]
-  description = "The Log Analytics Solution Plans to create. Do not add the SecurityInsights solution plan here, this deployment method is deprecated. Instead refer to"
+  description = "The Log Analytics Solution Plans to create. Do not add the SecurityInsights solution plan here, this deployment method is deprecated. Instead refer to `var.sentinel_onboarding`"
   nullable    = false
 }
 
@@ -223,6 +212,17 @@ variable "sentinel_onboarding" {
   })
   default     = {}
   description = "Enables customisation of the Sentinel onboarding. Set to null to disable."
+}
+
+variable "subscription_id" {
+  type        = string
+  default     = null
+  description = "The Azure Subscription ID to use for the resources. Leave as `null` to use the default subscription."
+
+  validation {
+    error_message = "Subscription id must `null` or a valid UUID."
+    condition     = var.subscription_id == null ? true : can(regex("^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$", var.subscription_id))
+  }
 }
 
 variable "tags" {

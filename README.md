@@ -33,9 +33,7 @@ The following requirements are needed by this module:
 
 - <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) (~> 1.8)
 
-- <a name="requirement_azapi"></a> [azapi](#requirement\_azapi) (~> 1.14)
-
-- <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) (~> 3.107)
+- <a name="requirement_azapi"></a> [azapi](#requirement\_azapi) (2.0.0-beta)
 
 - <a name="requirement_modtm"></a> [modtm](#requirement\_modtm) (~> 0.3)
 
@@ -45,18 +43,18 @@ The following requirements are needed by this module:
 
 The following resources are used by this module:
 
-- [azapi_resource.data_collection_rule](https://registry.terraform.io/providers/Azure/azapi/latest/docs/resources/resource) (resource)
-- [azapi_resource.sentinel_onboarding](https://registry.terraform.io/providers/Azure/azapi/latest/docs/resources/resource) (resource)
-- [azurerm_automation_account.management](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/automation_account) (resource)
-- [azurerm_log_analytics_linked_service.management](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/log_analytics_linked_service) (resource)
-- [azurerm_log_analytics_solution.management](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/log_analytics_solution) (resource)
-- [azurerm_log_analytics_workspace.management](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/log_analytics_workspace) (resource)
-- [azurerm_resource_group.management](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) (resource)
+- [azapi_resource.automation_account](https://registry.terraform.io/providers/Azure/azapi/2.0.0-beta/docs/resources/resource) (resource)
+- [azapi_resource.automation_account_link_to_log_analytics](https://registry.terraform.io/providers/Azure/azapi/2.0.0-beta/docs/resources/resource) (resource)
+- [azapi_resource.data_collection_rule](https://registry.terraform.io/providers/Azure/azapi/2.0.0-beta/docs/resources/resource) (resource)
+- [azapi_resource.log_analytics_solutions](https://registry.terraform.io/providers/Azure/azapi/2.0.0-beta/docs/resources/resource) (resource)
+- [azapi_resource.log_analytics_workspace](https://registry.terraform.io/providers/Azure/azapi/2.0.0-beta/docs/resources/resource) (resource)
+- [azapi_resource.rg](https://registry.terraform.io/providers/Azure/azapi/2.0.0-beta/docs/resources/resource) (resource)
+- [azapi_resource.sentinel_onboarding](https://registry.terraform.io/providers/Azure/azapi/2.0.0-beta/docs/resources/resource) (resource)
 - [azurerm_user_assigned_identity.management](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/user_assigned_identity) (resource)
 - [modtm_telemetry.telemetry](https://registry.terraform.io/providers/azure/modtm/latest/docs/resources/telemetry) (resource)
 - [random_uuid.telemetry](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/uuid) (resource)
+- [azapi_client_config.current](https://registry.terraform.io/providers/Azure/azapi/2.0.0-beta/docs/data-sources/client_config) (data source)
 - [azurerm_client_config.telemetry](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/client_config) (data source)
-- [azurerm_resource_group.management](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/resource_group) (data source)
 - [modtm_module_source.telemetry](https://registry.terraform.io/providers/azure/modtm/latest/docs/data-sources/module_source) (data source)
 
 <!-- markdownlint-disable MD013 -->
@@ -220,7 +218,7 @@ Default: `true`
 
 ### <a name="input_log_analytics_solution_plans"></a> [log\_analytics\_solution\_plans](#input\_log\_analytics\_solution\_plans)
 
-Description: The Log Analytics Solution Plans to create. Do not add the SecurityInsights solution plan here, this deployment method is deprecated. Instead refer to
+Description: The Log Analytics Solution Plans to create. Do not add the SecurityInsights solution plan here, this deployment method is deprecated. Instead refer to `var.sentinel_onboarding`
 
 Type:
 
@@ -340,6 +338,14 @@ object({
 ```
 
 Default: `{}`
+
+### <a name="input_subscription_id"></a> [subscription\_id](#input\_subscription\_id)
+
+Description: The Azure Subscription ID to use for the resources. Leave as `null` to use the default subscription.
+
+Type: `string`
+
+Default: `null`
 
 ### <a name="input_tags"></a> [tags](#input\_tags)
 

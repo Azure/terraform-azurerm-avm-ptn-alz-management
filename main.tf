@@ -1,6 +1,7 @@
 
 resource "azapi_resource" "rg" {
-  count    = var.resource_group_creation_enabled ? 1 : 0
+  count = var.resource_group_creation_enabled ? 1 : 0
+
   type     = "Microsoft.Resources/resourceGroups@2024-03-01"
   location = var.location
   name     = var.resource_group_name
@@ -8,10 +9,7 @@ resource "azapi_resource" "rg" {
 }
 
 resource "azapi_resource" "log_analytics_workspace" {
-  type      = "Microsoft.OperationalInsights/workspaces@2023-09-01"
-  location  = var.location
-  name      = var.log_analytics_workspace_name
-  parent_id = local.resource_group_resource_id
+  type = "Microsoft.OperationalInsights/workspaces@2023-09-01"
   body = {
     properties = {
       features = {
@@ -30,16 +28,16 @@ resource "azapi_resource" "log_analytics_workspace" {
       }
     }
   }
-  tags = var.tags
+  location  = var.location
+  name      = var.log_analytics_workspace_name
+  parent_id = local.resource_group_resource_id
+  tags      = var.tags
 }
 
 resource "azapi_resource" "automation_account" {
-  count     = var.linked_automation_account_creation_enabled ? 1 : 0
-  type      = "Microsoft.Automation/automationAccounts@2023-11-01"
-  name      = var.automation_account_name
-  parent_id = local.resource_group_resource_id
-  location  = var.location
+  count = var.linked_automation_account_creation_enabled ? 1 : 0
 
+  type = "Microsoft.Automation/automationAccounts@2023-11-01"
   body = {
     properties = {
       encryption = {
@@ -60,34 +58,39 @@ resource "azapi_resource" "automation_account" {
       }
     }
   }
+  location  = var.location
+  name      = var.automation_account_name
+  parent_id = local.resource_group_resource_id
+  tags      = var.tags
+
   dynamic "identity" {
     for_each = var.automation_account_identity != null ? [var.automation_account_identity] : []
+
     content {
       type         = identity.type
       identity_ids = identity.identity_ids
     }
   }
-  tags = var.tags
 }
 
 resource "azapi_resource" "automation_account_link_to_log_analytics" {
-  count     = var.linked_automation_account_creation_enabled ? 1 : 0
-  type      = "Microsoft.OperationalInsights/workspaces/linkedServices@2020-08-01"
-  parent_id = azapi_resource.log_analytics_workspace.id
-  name      = "Automation"
+  count = var.linked_automation_account_creation_enabled ? 1 : 0
+
+  type = "Microsoft.OperationalInsights/workspaces/linkedServices@2020-08-01"
   body = {
     properties = {
       resourceId            = azurerm_automation_account.management[0].id
       writeAccessResourceId = null
     }
   }
+  name      = "Automation"
+  parent_id = azapi_resource.log_analytics_workspace.id
 }
 
 resource "azapi_resource" "log_analytics_solutions" {
-  for_each  = { for plan in toset(var.log_analytics_solution_plans) : "${plan.publisher}/${plan.product}" => plan }
-  type      = "Microsoft.OperationsManagement/solutions@2015-11-01-preview"
-  parent_id = local.resource_group_resource_id
-  name      = "${basename(each.value.product)}(${azapi_resource.log_analytics_workspace.name})"
+  for_each = { for plan in toset(var.log_analytics_solution_plans) : "${plan.publisher}/${plan.product}" => plan }
+
+  type = "Microsoft.OperationsManagement/solutions@2015-11-01-preview"
   body = {
     plan = {
       name      = "${basename(each.value.product)}(${azapi_resource.log_analytics_workspace.name})"
@@ -98,6 +101,8 @@ resource "azapi_resource" "log_analytics_solutions" {
       workspaceResourceId = azapi_resource.log_analytics_workspace.id
     }
   }
+  name      = "${basename(each.value.product)}(${azapi_resource.log_analytics_workspace.name})"
+  parent_id = local.resource_group_resource_id
 
   depends_on = [
     azapi_resource.automation_account_link_to_log_analytics,
