@@ -14,11 +14,11 @@ output "automation_account" {
 
 output "automation_account_dsc_keys" {
   description = "Sensitive values for the Azure Automation Account."
+  sensitive   = true
   value = {
     primary   = try(azurerm_automation_account.management[0].dsc_primary_access_key, null)
     secondary = try(azurerm_automation_account.management[0].dsc_secondary_access_key, null)
   }
-  sensitive = true
 }
 
 output "data_collection_rule_ids" {
@@ -40,11 +40,11 @@ output "log_analytics_workspace" {
 
 output "log_analytics_workspace_keys" {
   description = "Sensitive values for the Log Analytics Workspace."
+  sensitive   = true
   value = {
     primary   = azurerm_log_analytics_workspace.management.primary_shared_key
     secondary = azurerm_log_analytics_workspace.management.secondary_shared_key
   }
-  sensitive = true
 }
 
 output "resource_group" {

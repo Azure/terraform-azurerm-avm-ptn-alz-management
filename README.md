@@ -384,6 +384,10 @@ The following outputs are exported:
 
 Description: A curated output of the Azure Automation Account.
 
+### <a name="output_automation_account_dsc_keys"></a> [automation\_account\_dsc\_keys](#output\_automation\_account\_dsc\_keys)
+
+Description: Sensitive values for the Azure Automation Account.
+
 ### <a name="output_data_collection_rule_ids"></a> [data\_collection\_rule\_ids](#output\_data\_collection\_rule\_ids)
 
 Description: Data Collection Rule Resource Ids.
@@ -391,6 +395,10 @@ Description: Data Collection Rule Resource Ids.
 ### <a name="output_log_analytics_workspace"></a> [log\_analytics\_workspace](#output\_log\_analytics\_workspace)
 
 Description: A curated output of the Log Analytics Workspace.
+
+### <a name="output_log_analytics_workspace_keys"></a> [log\_analytics\_workspace\_keys](#output\_log\_analytics\_workspace\_keys)
+
+Description: Sensitive values for the Log Analytics Workspace.
 
 ### <a name="output_resource_group"></a> [resource\_group](#output\_resource\_group)
 
