@@ -7,12 +7,6 @@ resource "azurerm_resource_group" "management" {
   tags     = var.tags
 }
 
-data "azurerm_resource_group" "management" {
-  count = var.resource_group_creation_enabled ? 0 : 1
-
-  name = var.resource_group_name
-}
-
 resource "azurerm_log_analytics_workspace" "management" {
   location                           = var.location
   name                               = var.log_analytics_workspace_name
