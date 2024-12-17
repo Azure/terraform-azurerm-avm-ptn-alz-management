@@ -349,6 +349,43 @@ Type: `map(string)`
 
 Default: `null`
 
+### <a name="input_timeouts"></a> [timeouts](#input\_timeouts)
+
+Description: A map of timeouts to apply to the creation and destruction of resources.  
+If using retry, the maximum elapsed retry time is governed by this value.
+
+The object has attributes for each resource type, with the following optional attributes:
+
+- `create` - (Optional) The timeout for creating the resource. Defaults to `5m`.
+- `delete` - (Optional) The timeout for deleting the resource. Defaults to `5m` apart from data\_collection\_rule, where this is set to `10m`.
+- `update` - (Optional) The timeout for updating the resource. Defaults to `5m`.
+- `read` - (Optional) The timeout for reading the resource. Defaults to `5m`.
+
+Each time duration is parsed using this function: <https://pkg.go.dev/time#ParseDuration>.
+
+Type:
+
+```hcl
+object({
+    sentinel_onboarding = optional(object({
+      create = optional(string, "5m")
+      delete = optional(string, "5m")
+      update = optional(string, "5m")
+      read   = optional(string, "5m")
+      }), {}
+    )
+    data_collection_rule = optional(object({
+      create = optional(string, "5m")
+      delete = optional(string, "10m")
+      update = optional(string, "5m")
+      read   = optional(string, "5m")
+      }), {}
+    )
+  })
+```
+
+Default: `{}`
+
 ### <a name="input_user_assigned_managed_identities"></a> [user\_assigned\_managed\_identities](#input\_user\_assigned\_managed\_identities)
 
 Description: Enables customisation of the user assigned managed identities.

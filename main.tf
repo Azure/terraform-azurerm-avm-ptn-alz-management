@@ -92,6 +92,13 @@ resource "azapi_resource" "sentinel_onboarding" {
   }
   name      = var.sentinel_onboarding.name
   parent_id = azurerm_log_analytics_workspace.management.id
+
+  timeouts {
+    create = var.timeouts.sentinel_onboarding.create
+    delete = var.timeouts.sentinel_onboarding.delete
+    read   = var.timeouts.sentinel_onboarding.read
+    update = var.timeouts.sentinel_onboarding.update
+  }
 }
 
 resource "azurerm_user_assigned_identity" "management" {
@@ -113,4 +120,11 @@ resource "azapi_resource" "data_collection_rule" {
   parent_id                 = local.resource_group_resource_id
   schema_validation_enabled = each.value.schema_validation_enabled
   tags                      = each.value.tags
+
+  timeouts {
+    create = var.timeouts.data_collection_rule.create
+    delete = var.timeouts.data_collection_rule.delete
+    read   = var.timeouts.data_collection_rule.read
+    update = var.timeouts.data_collection_rule.update
+  }
 }
