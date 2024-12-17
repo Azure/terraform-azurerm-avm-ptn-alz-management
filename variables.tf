@@ -48,7 +48,7 @@ variable "automation_account_local_authentication_enabled" {
 variable "automation_account_location" {
   type        = string
   default     = null
-  description = "The Azure region of the Azure Automation Account to deploy. This suppports overriding the location variable in specific cases."
+  description = "The Azure region of the Azure Automation Account to deploy. This supports overriding the location variable in specific cases."
 }
 
 variable "automation_account_public_network_access_enabled" {
@@ -98,7 +98,21 @@ variable "data_collection_rules" {
       name = "dcr-defender-sql"
     }
   }
-  description = "Enables customisation of the data collection rules."
+  description = <<DESCRIPTION
+Enables customisation of the data collection rules for Azure Monitor.
+This is an object with attributes pertaining to the three DCRs that are created by this module.
+
+Each object has the following attributes:
+
+- enabled (Optional) - Whether or not to create the data collection rule. Defaults to `true`.
+- name (Required) - The name of the data collection rule. For the default values, see the default variable value.
+- location (Optional) - The Azure region of the data collection rule. Defaults to the value of the location variable.
+- tags (Optional) - A map of tags to apply to the data collection rule. Defaults to `null`.
+
+The defender_sql object has an additional attribute:
+
+- enable_collection_of_sql_queries_for_security_research (Optional) - Whether or not to enable collection of SQL queries for security research. Defaults to `false`.
+DESCRIPTION
 }
 
 variable "enable_telemetry" {
@@ -114,7 +128,7 @@ DESCRIPTION
 
 variable "linked_automation_account_creation_enabled" {
   type        = bool
-  default     = true
+  default     = false
   description = "A boolean flag to determine whether to deploy the Azure Automation Account linked to the Log Analytics Workspace or not."
   nullable    = false
 }
@@ -134,7 +148,15 @@ variable "log_analytics_solution_plans" {
       publisher = "Microsoft"
     },
   ]
-  description = "The Log Analytics Solution Plans to create. Do not add the SecurityInsights solution plan here, this deployment method is deprecated. Instead refer to"
+  description = <<DESCRIPTION
+The Log Analytics Solution Plans to create.
+Do not add the SecurityInsights solution plan here, this deployment method is deprecated. Instead refer to `sentinel_onboarding` variable.
+
+The value of this variable is a list of objects with the following attributes:
+
+- product (Required) - The product name of the solution plan, e.g. `OMSGallery/ContainerInsights`.
+- publisher (Optional) - The publisher name of the solution plan, e.g. `Microsoft`. Defaults to `Microsoft`.
+DESCRIPTION
   nullable    = false
 }
 
@@ -211,7 +233,14 @@ variable "sentinel_onboarding" {
     customer_managed_key_enabled = optional(bool, false)
   })
   default     = {}
-  description = "Enables customisation of the Sentinel onboarding. Set to null to disable."
+  description = <<DESCRIPTION
+Enables customisation of the Sentinel onboarding. Set to `null` to disable.
+
+This is an object with the following attributes:
+
+- name (Optional) - The name of the Sentinel onboarding object. Defaults to `default`.
+- customer_managed_key_enabled (Optional) - Whether or not to enable customer-managed keys for the Sentinel onboarding. Defaults to `false`.
+DESCRIPTION
 }
 
 variable "tags" {
@@ -234,5 +263,15 @@ variable "user_assigned_managed_identities" {
       name = "uami-ama"
     }
   }
-  description = "Enables customisation of the user assigned managed identities."
+  description = <<DESCRIPTION
+Enables customisation of the user assigned managed identities.
+
+The value of this variable is an object with the following attributes:
+
+- ama (Required) - The user assigned managed identity for the Azure Monitor Agent.
+  - enabled (Optional) - Whether or not to create the user assigned managed identity. Defaults to `true`.
+  - name (Required) - The name of the user assigned managed identity, the variable default value is `uami-ama`.
+  - location (Optional) - The Azure region of the user assigned managed identity. Defaults to the value of the location variable.
+  - tags (Optional) - A map of tags to apply to the user assigned managed identity. Defaults to `null`.
+DESCRIPTION
 }

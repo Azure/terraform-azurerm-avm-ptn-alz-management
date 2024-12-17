@@ -132,7 +132,7 @@ Default: `true`
 
 ### <a name="input_automation_account_location"></a> [automation\_account\_location](#input\_automation\_account\_location)
 
-Description: The Azure region of the Azure Automation Account to deploy. This suppports overriding the location variable in specific cases.
+Description: The Azure region of the Azure Automation Account to deploy. This supports overriding the location variable in specific cases.
 
 Type: `string`
 
@@ -156,7 +156,19 @@ Default: `"Basic"`
 
 ### <a name="input_data_collection_rules"></a> [data\_collection\_rules](#input\_data\_collection\_rules)
 
-Description: Enables customisation of the data collection rules.
+Description: Enables customisation of the data collection rules for Azure Monitor.  
+This is an object with attributes pertaining to the three DCRs that are created by this module.
+
+Each object has the following attributes:
+
+- enabled (Optional) - Whether or not to create the data collection rule. Defaults to `true`.
+- name (Required) - The name of the data collection rule. For the default values, see the default variable value.
+- location (Optional) - The Azure region of the data collection rule. Defaults to the value of the location variable.
+- tags (Optional) - A map of tags to apply to the data collection rule. Defaults to `null`.
+
+The defender\_sql object has an additional attribute:
+
+- enable\_collection\_of\_sql\_queries\_for\_security\_research (Optional) - Whether or not to enable collection of SQL queries for security research. Defaults to `false`.
 
 Type:
 
@@ -216,11 +228,17 @@ Description: A boolean flag to determine whether to deploy the Azure Automation 
 
 Type: `bool`
 
-Default: `true`
+Default: `false`
 
 ### <a name="input_log_analytics_solution_plans"></a> [log\_analytics\_solution\_plans](#input\_log\_analytics\_solution\_plans)
 
-Description: The Log Analytics Solution Plans to create. Do not add the SecurityInsights solution plan here, this deployment method is deprecated. Instead refer to
+Description: The Log Analytics Solution Plans to create.  
+Do not add the SecurityInsights solution plan here, this deployment method is deprecated. Instead refer to `sentinel_onboarding` variable.
+
+The value of this variable is a list of objects with the following attributes:
+
+- product (Required) - The product name of the solution plan, e.g. `OMSGallery/ContainerInsights`.
+- publisher (Optional) - The publisher name of the solution plan, e.g. `Microsoft`. Defaults to `Microsoft`.
 
 Type:
 
@@ -328,7 +346,12 @@ Default: `true`
 
 ### <a name="input_sentinel_onboarding"></a> [sentinel\_onboarding](#input\_sentinel\_onboarding)
 
-Description: Enables customisation of the Sentinel onboarding. Set to null to disable.
+Description: Enables customisation of the Sentinel onboarding. Set to `null` to disable.
+
+This is an object with the following attributes:
+
+- name (Optional) - The name of the Sentinel onboarding object. Defaults to `default`.
+- customer\_managed\_key\_enabled (Optional) - Whether or not to enable customer-managed keys for the Sentinel onboarding. Defaults to `false`.
 
 Type:
 
@@ -352,6 +375,14 @@ Default: `null`
 ### <a name="input_user_assigned_managed_identities"></a> [user\_assigned\_managed\_identities](#input\_user\_assigned\_managed\_identities)
 
 Description: Enables customisation of the user assigned managed identities.
+
+The value of this variable is an object with the following attributes:
+
+- ama (Required) - The user assigned managed identity for the Azure Monitor Agent.
+  - enabled (Optional) - Whether or not to create the user assigned managed identity. Defaults to `true`.
+  - name (Required) - The name of the user assigned managed identity, the variable default value is `uami-ama`.
+  - location (Optional) - The Azure region of the user assigned managed identity. Defaults to the value of the location variable.
+  - tags (Optional) - A map of tags to apply to the user assigned managed identity. Defaults to `null`.
 
 Type:
 
