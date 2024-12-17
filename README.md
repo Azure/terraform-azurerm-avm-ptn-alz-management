@@ -55,8 +55,8 @@ The following resources are used by this module:
 - [azurerm_user_assigned_identity.management](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/user_assigned_identity) (resource)
 - [modtm_telemetry.telemetry](https://registry.terraform.io/providers/azure/modtm/latest/docs/resources/telemetry) (resource)
 - [random_uuid.telemetry](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/uuid) (resource)
+- [azapi_client_config.current](https://registry.terraform.io/providers/Azure/azapi/latest/docs/data-sources/client_config) (data source)
 - [azurerm_client_config.telemetry](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/client_config) (data source)
-- [azurerm_resource_group.management](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/resource_group) (data source)
 - [modtm_module_source.telemetry](https://registry.terraform.io/providers/azure/modtm/latest/docs/data-sources/module_source) (data source)
 
 <!-- markdownlint-disable MD013 -->
@@ -371,6 +371,43 @@ Description: A map of tags to apply to the resources created.
 Type: `map(string)`
 
 Default: `null`
+
+### <a name="input_timeouts"></a> [timeouts](#input\_timeouts)
+
+Description: A map of timeouts to apply to the creation and destruction of resources.  
+If using retry, the maximum elapsed retry time is governed by this value.
+
+The object has attributes for each resource type, with the following optional attributes:
+
+- `create` - (Optional) The timeout for creating the resource. Defaults to `5m`.
+- `delete` - (Optional) The timeout for deleting the resource. Defaults to `5m` apart from data\_collection\_rule, where this is set to `10m`.
+- `update` - (Optional) The timeout for updating the resource. Defaults to `5m`.
+- `read` - (Optional) The timeout for reading the resource. Defaults to `5m`.
+
+Each time duration is parsed using this function: <https://pkg.go.dev/time#ParseDuration>.
+
+Type:
+
+```hcl
+object({
+    sentinel_onboarding = optional(object({
+      create = optional(string, "5m")
+      delete = optional(string, "5m")
+      update = optional(string, "5m")
+      read   = optional(string, "5m")
+      }), {}
+    )
+    data_collection_rule = optional(object({
+      create = optional(string, "5m")
+      delete = optional(string, "10m")
+      update = optional(string, "5m")
+      read   = optional(string, "5m")
+      }), {}
+    )
+  })
+```
+
+Default: `{}`
 
 ### <a name="input_user_assigned_managed_identities"></a> [user\_assigned\_managed\_identities](#input\_user\_assigned\_managed\_identities)
 
