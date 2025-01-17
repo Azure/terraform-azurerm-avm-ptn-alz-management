@@ -295,6 +295,7 @@ locals {
                   "Microsoft-DefenderForSqlTelemetry",
                   "Microsoft-DefenderForSqlScanEvents",
                   "Microsoft-DefenderForSqlScanResults",
+                  "Microsoft-SqlAtpStatus-DefenderForSql"
                 ],
                 extensionSettings = {
                   enableCollectionOfSqlQueriesForSecurityResearch = var.data_collection_rules.defender_sql.enable_collection_of_sql_queries_for_security_research
@@ -318,6 +319,7 @@ locals {
                 "Microsoft-DefenderForSqlTelemetry",
                 "Microsoft-DefenderForSqlScanEvents",
                 "Microsoft-DefenderForSqlScanResults",
+                "Microsoft-SqlAtpStatus-DefenderForSql"
               ],
               destinations = [
                 "LogAnalyticsDest"
