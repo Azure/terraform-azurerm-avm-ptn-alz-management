@@ -25,22 +25,33 @@ resource "azurerm_user_assigned_identity" "management" {
 module "management" {
   source = "../.."
 
-  automation_account_name         = "aa-terraform-azure"
-  location                        = "westeurope"
-  log_analytics_workspace_name    = "law-terraform-azure"
-  resource_group_name             = azurerm_resource_group.management.name
-  resource_group_creation_enabled = false
-
+  automation_account_name      = "aa-terraform-azure"
+  location                     = "westeurope"
+  log_analytics_workspace_name = "law-terraform-azure"
+  resource_group_name          = azurerm_resource_group.management.name
   automation_account_identity = {
     type         = "SystemAssigned, UserAssigned"
     identity_ids = [azurerm_user_assigned_identity.management.id]
   }
-
   automation_account_local_authentication_enabled  = true
   automation_account_public_network_access_enabled = true
   automation_account_sku_name                      = "Basic"
-  linked_automation_account_creation_enabled       = true
-
+  data_collection_rules = {
+    change_tracking = {
+      name     = "dcr-change-tracking-${random_id.id.hex}"
+      location = azurerm_resource_group.management.location
+      tags = {
+        testing = "123"
+      }
+    }
+    vm_insights = {
+      name = "dcr-vm-insights-${random_id.id.hex}"
+    }
+    defender_sql = {
+      name = "dcr-defender-sql-${random_id.id.hex}"
+    }
+  }
+  linked_automation_account_creation_enabled = true
   log_analytics_solution_plans = [
     {
       product   = "OMSGallery/AgentHealthAssessment"
@@ -59,7 +70,6 @@ module "management" {
       publisher = "Microsoft"
     },
   ]
-
   log_analytics_workspace_allow_resource_only_permissions    = true
   log_analytics_workspace_cmk_for_query_forced               = true
   log_analytics_workspace_daily_quota_gb                     = 1
@@ -68,31 +78,14 @@ module "management" {
   log_analytics_workspace_reservation_capacity_in_gb_per_day = 200
   log_analytics_workspace_retention_in_days                  = 50
   log_analytics_workspace_sku                                = "CapacityReservation"
-
+  resource_group_creation_enabled                            = false
+  tags = {
+    environment = "dev"
+  }
   user_assigned_managed_identities = {
     ama = {
       name = "uami-ama-${random_id.id.hex}"
     }
-  }
-
-  data_collection_rules = {
-    change_tracking = {
-      name     = "dcr-change-tracking-${random_id.id.hex}"
-      location = azurerm_resource_group.management.location
-      tags = {
-        testing = "123"
-      }
-    }
-    vm_insights = {
-      name = "dcr-vm-insights-${random_id.id.hex}"
-    }
-    defender_sql = {
-      name = "dcr-defender-sql-${random_id.id.hex}"
-    }
-  }
-
-  tags = {
-    environment = "dev"
   }
 }
 ```
@@ -102,7 +95,7 @@ module "management" {
 
 The following requirements are needed by this module:
 
-- <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) (~> 1.8)
+- <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) (>= 1.9, < 2.0)
 
 - <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) (~> 4.0)
 
