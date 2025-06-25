@@ -308,3 +308,56 @@ The value of this variable is an object with the following attributes:
   - tags (Optional) - A map of tags to apply to the user assigned managed identity. Defaults to `null`.
 DESCRIPTION
 }
+
+variable "management_resource_locks" {
+  type = object({
+    resource_group = optional(object({
+      enabled    = optional(bool, false)
+      lock_level = optional(string, "CanNotDelete")
+      }), {
+      enabled    = false
+      lock_level = "CanNotDelete"
+    })
+    log_analytics = optional(object({
+      enabled    = optional(bool, false)
+      lock_level = optional(string, "CanNotDelete")
+      }), {
+      enabled    = false
+      lock_level = "CanNotDelete"
+    })
+    automation_account = optional(object({
+      enabled    = optional(bool, false)
+      lock_level = optional(string, "CanNotDelete")
+      }), {
+      enabled    = false
+      lock_level = "CanNotDelete"
+    })
+    user_assigned_identities = optional(object({
+      enabled    = optional(bool, false)
+      lock_level = optional(string, "CanNotDelete")
+      }), {
+      enabled    = false
+      lock_level = "CanNotDelete"
+    })
+    data_collection_rules = optional(object({
+      enabled    = optional(bool, false)
+      lock_level = optional(string, "CanNotDelete")
+      }), {
+      enabled    = false
+      lock_level = "CanNotDelete"
+    })
+  })
+
+  validation {
+    condition = alltrue([
+      contains(["CanNotDelete", "ReadOnly"], var.management_resource_locks.resource_group.lock_level),
+      contains(["CanNotDelete", "ReadOnly"], var.management_resource_locks.log_analytics.lock_level),
+      contains(["CanNotDelete", "ReadOnly"], var.management_resource_locks.automation_account.lock_level),
+      contains(["CanNotDelete", "ReadOnly"], var.management_resource_locks.user_assigned_identities.lock_level),
+      contains(["CanNotDelete", "ReadOnly"], var.management_resource_locks.data_collection_rules.lock_level)
+    ])
+    error_message = "All lock_level values must be either 'CanNotDelete' or 'ReadOnly'."
+  }
+  default     = {}
+  description = "Resource Locks that can be assigned to management resources to prevent accidential deletion or modification."
+}
