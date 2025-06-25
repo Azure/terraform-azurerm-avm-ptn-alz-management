@@ -13,14 +13,12 @@ locals {
       for lock_name, lock_config in var.management_resource_locks : lock_name => {
         lock_level = lock_config.lock_level
         scope = (
-          lock_name == "resource_group" ? azurerm_resource_group.management[0].id :
           lock_name == "log_analytics" ? azurerm_log_analytics_workspace.management.id :
           lock_name == "automation_account" ? azurerm_automation_account.management[0].id :
           lock_name == "user_assigned_identities" ? azurerm_user_assigned_identity.management["ama"].id : null
         )
         } if lock_config.enabled && (
         # Check if the corresponding resource actually exists using the same variables
-        lock_name == "resource_group" ? var.resource_group_creation_enabled :
         lock_name == "log_analytics" ? true : # Log analytics always exists  
         lock_name == "automation_account" ? var.linked_automation_account_creation_enabled :
         lock_name == "user_assigned_identities" ? var.user_assigned_managed_identities.ama.enabled :
