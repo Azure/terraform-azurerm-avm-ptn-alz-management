@@ -84,14 +84,14 @@ resource "azurerm_log_analytics_solution" "management" {
 resource "azapi_resource" "sentinel_onboarding" {
   count = var.sentinel_onboarding != null ? 1 : 0
 
-  type = "Microsoft.SecurityInsights/onboardingStates@2024-03-01"
+  name      = var.sentinel_onboarding.name
+  parent_id = azurerm_log_analytics_workspace.management.id
+  type      = "Microsoft.SecurityInsights/onboardingStates@2024-03-01"
   body = {
     properties = {
       customerManagedKey = var.sentinel_onboarding.customer_managed_key_enabled
     }
   }
-  name      = var.sentinel_onboarding.name
-  parent_id = azurerm_log_analytics_workspace.management.id
 
   timeouts {
     create = var.timeouts.sentinel_onboarding.create
@@ -113,11 +113,11 @@ resource "azurerm_user_assigned_identity" "management" {
 resource "azapi_resource" "data_collection_rule" {
   for_each = local.data_collection_rules
 
-  type                      = each.value.type
-  body                      = each.value.body
   location                  = each.value.location
   name                      = each.value.name
   parent_id                 = local.resource_group_resource_id
+  type                      = each.value.type
+  body                      = each.value.body
   schema_validation_enabled = each.value.schema_validation_enabled
   tags                      = each.value.tags
 
