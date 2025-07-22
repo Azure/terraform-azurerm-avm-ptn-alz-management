@@ -247,7 +247,7 @@ locals {
             logAnalytics = [
               {
                 name                = "Microsoft-CT-Dest"
-                workspaceResourceId = azurerm_log_analytics_workspace.management.id
+                workspaceResourceId = try(azurerm_log_analytics_workspace.management[0].id, var.log_analytics_workspace_id),
               }
             ]
           }
@@ -306,7 +306,7 @@ locals {
           destinations = {
             logAnalytics = [
               {
-                workspaceResourceId = azurerm_log_analytics_workspace.management.id,
+                workspaceResourceId = try(azurerm_log_analytics_workspace.management[0].id, var.log_analytics_workspace_id),
                 name                = "LogAnalyticsDest"
               }
             ]
@@ -372,7 +372,7 @@ locals {
           destinations = {
             logAnalytics = [
               {
-                workspaceResourceId = azurerm_log_analytics_workspace.management.id,
+                workspaceResourceId = try(azurerm_log_analytics_workspace.management[0].id, var.log_analytics_workspace_id),
                 name                = "VMInsightsPerf-Logs-Dest"
               }
             ]
