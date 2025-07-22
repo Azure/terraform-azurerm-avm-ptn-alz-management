@@ -78,4 +78,16 @@ module "management" {
       name = "uami-ama-${random_id.id.hex}"
     }
   }
+  management_resource_locks = {
+    automation_account = {
+      enabled = true
+    }
+    data_collection_rules = {
+      enabled    = true
+      lock_level = "ReadOnly"
+    }
+    user_assigned_identities = {
+      enabled = true
+    }
+  }
 }
