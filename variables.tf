@@ -9,9 +9,25 @@ variable "location" {
   nullable    = false
 }
 
+variable "log_analytics_workspace_creation_enabled" {
+  type        = bool
+  default     = true
+  description = "Whether or not to create a Log Analytics Workspace."
+}
+
+variable "log_analytics_workspace_id" {
+  type        = string
+  default     = null
+  description = "The ID of the pre-existing Log Analytics Workspace to use. Required if `log_analytics_workspace_creation_enabled` is `false`."
+  nullable    = true
+}
+
+
 variable "log_analytics_workspace_name" {
   type        = string
+  default     = null
   description = "The name of the Log Analytics Workspace to create."
+  nullable    = true
 }
 
 variable "resource_group_name" {
