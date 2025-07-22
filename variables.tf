@@ -209,10 +209,10 @@ variable "log_analytics_workspace_internet_query_enabled" {
   nullable    = false
 }
 
-variable "log_analytics_workspace_local_authentication_disabled" {
+variable "log_analytics_workspace_local_authentication_enabled" {
   type        = bool
   default     = false
-  description = "Whether or not local authentication is disabled for the Log Analytics Workspace."
+  description = "Whether or not local authentication is enabled for the Log Analytics Workspace."
   nullable    = false
 }
 

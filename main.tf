@@ -18,7 +18,7 @@ resource "azurerm_log_analytics_workspace" "management" {
   daily_quota_gb                     = var.log_analytics_workspace_daily_quota_gb
   internet_ingestion_enabled         = var.log_analytics_workspace_internet_ingestion_enabled
   internet_query_enabled             = var.log_analytics_workspace_internet_query_enabled
-  local_authentication_disabled      = var.log_analytics_workspace_local_authentication_disabled
+  local_authentication_enabled       = var.log_analytics_workspace_local_authentication_enabled
   reservation_capacity_in_gb_per_day = var.log_analytics_workspace_reservation_capacity_in_gb_per_day
   retention_in_days                  = var.log_analytics_workspace_retention_in_days
   sku                                = var.log_analytics_workspace_sku
