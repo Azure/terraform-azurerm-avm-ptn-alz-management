@@ -4,18 +4,33 @@
 This code sample demonstrates how to create resources using an existing Log Analytics Workspace (BYO workspace scenario).
 
 ```hcl
+locals {
+  location = "eastus2"
+}
+
 resource "random_id" "id" {
   byte_length = 4
+}
+
+resource "azurerm_resource_group" "this" {
+  location = local.location
+  name     = "rg-terraform-${random_id.id.hex}"
+}
+
+resource "azurerm_log_analytics_workspace" "this" {
+  location            = local.location
+  name                = "law-terraform-${random_id.id.hex}"
+  resource_group_name = azurerm_resource_group.name
 }
 
 module "management" {
   source = "../.."
 
   automation_account_name                  = "aa-terraform-${random_id.id.hex}"
-  location                                 = "eastus"
-  resource_group_name                      = "<EXISTING_RESOURCE_GROUP_NAME>"
+  location                                 = local.location
+  resource_group_name                      = azurerm_resource_group.this.name
   log_analytics_workspace_creation_enabled = false
-  log_analytics_workspace_id               = "<EXISTING_LOG_ANALYTICS_WORKSPACE_ID>"
+  log_analytics_workspace_id               = azurerm_log_analytics_workspace.this.id
   resource_group_creation_enabled          = false
 }
 ```
@@ -35,6 +50,8 @@ The following requirements are needed by this module:
 
 The following resources are used by this module:
 
+- [azurerm_log_analytics_workspace.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/log_analytics_workspace) (resource)
+- [azurerm_resource_group.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) (resource)
 - [random_id.id](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/id) (resource)
 
 <!-- markdownlint-disable MD013 -->
@@ -48,19 +65,7 @@ No optional inputs.
 
 ## Outputs
 
-The following outputs are exported:
-
-### <a name="output_test_automation_account_resource_id"></a> [test\_automation\_account\_resource\_id](#output\_test\_automation\_account\_resource\_id)
-
-Description: value of the resource ID for the Azure Automation Account.
-
-### <a name="output_test_data_collection_rule_ids"></a> [test\_data\_collection\_rule\_ids](#output\_test\_data\_collection\_rule\_ids)
-
-Description: Data Collection Rule Resource Ids.
-
-### <a name="output_test_managed_identity_ids"></a> [test\_managed\_identity\_ids](#output\_test\_managed\_identity\_ids)
-
-Description: User assigned identity IDs.
+No outputs.
 
 ## Modules
 
