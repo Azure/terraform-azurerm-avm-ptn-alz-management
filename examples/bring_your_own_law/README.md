@@ -20,7 +20,7 @@ resource "azurerm_resource_group" "this" {
 resource "azurerm_log_analytics_workspace" "this" {
   location            = local.location
   name                = "law-terraform-${random_id.id.hex}"
-  resource_group_name = azurerm_resource_group.name
+  resource_group_name = azurerm_resource_group.this.name
 }
 
 module "management" {
