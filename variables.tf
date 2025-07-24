@@ -9,9 +9,44 @@ variable "location" {
   nullable    = false
 }
 
+variable "log_analytics_workspace_creation_enabled" {
+  type        = bool
+  default     = true
+  description = "Whether or not to create a Log Analytics Workspace."
+}
+
+variable "log_analytics_workspace_id" {
+  type        = string
+  default     = null
+  description = "The ID of the pre-existing Log Analytics Workspace to use. Required if `log_analytics_workspace_creation_enabled` is `false`."
+  nullable    = true
+
+  validation {
+    condition = (
+      var.log_analytics_workspace_creation_enabled == true ||
+      (
+        var.log_analytics_workspace_creation_enabled == false &&
+        var.log_analytics_workspace_id != null &&
+        can(regex("^/subscriptions/[0-9a-fA-F-]+/resourceGroups/[^/]+/providers/Microsoft.OperationalInsights/workspaces/[^/]+$", var.log_analytics_workspace_id))
+      )
+    )
+    error_message = "You must supply a valid Log Analytics Workspace resource ID when log_analytics_workspace_creation_enabled is false.\nThe resource ID when specified must have the format '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}'."
+  }
+}
+
+
 variable "log_analytics_workspace_name" {
   type        = string
+  default     = null
   description = "The name of the Log Analytics Workspace to create."
+
+  validation {
+    condition = (
+      var.log_analytics_workspace_creation_enabled == false ||
+      (var.log_analytics_workspace_creation_enabled == true && var.log_analytics_workspace_name != null)
+    )
+    error_message = "You must supply a value for log_analytics_workspace_name when log_analytics_workspace_creation_enabled is true."
+  }
 }
 
 variable "resource_group_name" {
@@ -193,10 +228,10 @@ variable "log_analytics_workspace_internet_query_enabled" {
   nullable    = false
 }
 
-variable "log_analytics_workspace_local_authentication_disabled" {
+variable "log_analytics_workspace_local_authentication_enabled" {
   type        = bool
-  default     = false
-  description = "Whether or not local authentication is disabled for the Log Analytics Workspace."
+  default     = true
+  description = "Whether or not local authentication is enabled for the Log Analytics Workspace."
   nullable    = false
 }
 

@@ -32,9 +32,9 @@ output "data_collection_rule_ids" {
 output "log_analytics_workspace" {
   description = "A curated output of the Log Analytics Workspace."
   value = {
-    id           = azurerm_log_analytics_workspace.management.id
-    name         = azurerm_log_analytics_workspace.management.name
-    workspace_id = azurerm_log_analytics_workspace.management.workspace_id
+    id           = try(azurerm_log_analytics_workspace.management[0].id, null)
+    name         = try(azurerm_log_analytics_workspace.management[0].name, null)
+    workspace_id = try(azurerm_log_analytics_workspace.management[0].workspace_id, null)
   }
 }
 
@@ -42,8 +42,8 @@ output "log_analytics_workspace_keys" {
   description = "Sensitive values for the Log Analytics Workspace."
   sensitive   = true
   value = {
-    primary   = azurerm_log_analytics_workspace.management.primary_shared_key
-    secondary = azurerm_log_analytics_workspace.management.secondary_shared_key
+    primary   = try(azurerm_log_analytics_workspace.management[0].primary_shared_key, null)
+    secondary = try(azurerm_log_analytics_workspace.management[0].secondary_shared_key, null)
   }
 }
 
@@ -57,7 +57,7 @@ output "resource_group" {
 
 output "resource_id" {
   description = "The resource ID of the Log Analytics Workspace."
-  value       = azurerm_log_analytics_workspace.management.id
+  value       = try(azurerm_log_analytics_workspace.management[0].id, null)
 }
 
 output "user_assigned_identity_ids" {
