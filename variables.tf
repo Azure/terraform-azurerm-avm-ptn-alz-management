@@ -30,7 +30,7 @@ variable "log_analytics_workspace_id" {
         can(regex("^/subscriptions/[0-9a-fA-F-]+/resourceGroups/[^/]+/providers/Microsoft.OperationalInsights/workspaces/[^/]+$", var.log_analytics_workspace_id))
       )
     )
-    error_message = "You must supply a valid Log Analytics Workspace resource ID when log_analytics_workspace_creation_enabled is false.\nThe resource ID when specified must have the format '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}'"
+    error_message = "You must supply a valid Log Analytics Workspace resource ID when log_analytics_workspace_creation_enabled is false.\nThe resource ID when specified must have the format '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}'."
   }
 }
 
