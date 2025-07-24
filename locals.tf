@@ -4,5 +4,6 @@ locals {
 }
 
 locals {
-  log_analytics_workspace_id = var.log_analytics_workspace_creation_enabled ? azurerm_log_analytics_workspace.management[0].id : var.log_analytics_workspace_id
+  log_analytics_workspace_id   = var.log_analytics_workspace_creation_enabled ? azurerm_log_analytics_workspace.management[0].id : var.log_analytics_workspace_id
+  log_analytics_workspace_name = var.log_analytics_workspace_creation_enabled ? azurerm_log_analytics_workspace.management[0].name : provider::azapi::parse_resource_id(var.log_analytics_workspace_id).name
 }

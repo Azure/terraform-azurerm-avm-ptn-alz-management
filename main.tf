@@ -69,7 +69,7 @@ resource "azurerm_log_analytics_solution" "management" {
   location              = var.location
   resource_group_name   = local.resource_group_name
   solution_name         = basename(each.value.product)
-  workspace_name        = var.log_analytics_workspace_name
+  workspace_name        = local.log_analytics_workspace_name
   workspace_resource_id = local.log_analytics_workspace_id
   tags                  = var.tags
 
