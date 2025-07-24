@@ -58,7 +58,7 @@ resource "azurerm_log_analytics_linked_service" "management" {
   count = var.linked_automation_account_creation_enabled ? 1 : 0
 
   resource_group_name = local.resource_group_name
-  workspace_id        = azurerm_log_analytics_workspace.management[0].id
+  workspace_id        = local.log_analytics_workspace_id
   read_access_id      = azurerm_automation_account.management[0].id
   write_access_id     = null
 }
@@ -70,7 +70,7 @@ resource "azurerm_log_analytics_solution" "management" {
   resource_group_name   = local.resource_group_name
   solution_name         = basename(each.value.product)
   workspace_name        = var.log_analytics_workspace_name
-  workspace_resource_id = azurerm_log_analytics_workspace.management[0].id
+  workspace_resource_id = local.log_analytics_workspace_id
   tags                  = var.tags
 
   plan {
@@ -87,7 +87,7 @@ resource "azapi_resource" "sentinel_onboarding" {
   count = var.sentinel_onboarding != null ? 1 : 0
 
   name      = var.sentinel_onboarding.name
-  parent_id = azurerm_log_analytics_workspace.management[0].id
+  parent_id = local.log_analytics_workspace_id
   type      = "Microsoft.SecurityInsights/onboardingStates@2024-03-01"
   body = {
     properties = {

@@ -9,46 +9,6 @@ variable "location" {
   nullable    = false
 }
 
-variable "log_analytics_workspace_creation_enabled" {
-  type        = bool
-  default     = true
-  description = "Whether or not to create a Log Analytics Workspace."
-}
-
-variable "log_analytics_workspace_id" {
-  type        = string
-  default     = null
-  description = "The ID of the pre-existing Log Analytics Workspace to use. Required if `log_analytics_workspace_creation_enabled` is `false`."
-  nullable    = true
-
-  validation {
-    condition = (
-      var.log_analytics_workspace_creation_enabled == true ||
-      (
-        var.log_analytics_workspace_creation_enabled == false &&
-        var.log_analytics_workspace_id != null &&
-        can(regex("^/subscriptions/[0-9a-fA-F-]+/resourceGroups/[^/]+/providers/Microsoft.OperationalInsights/workspaces/[^/]+$", var.log_analytics_workspace_id))
-      )
-    )
-    error_message = "You must supply a valid Log Analytics Workspace resource ID when log_analytics_workspace_creation_enabled is false.\nThe resource ID when specified must have the format '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}'."
-  }
-}
-
-
-variable "log_analytics_workspace_name" {
-  type        = string
-  default     = null
-  description = "The name of the Log Analytics Workspace to create."
-
-  validation {
-    condition = (
-      var.log_analytics_workspace_creation_enabled == false ||
-      (var.log_analytics_workspace_creation_enabled == true && var.log_analytics_workspace_name != null)
-    )
-    error_message = "You must supply a value for log_analytics_workspace_name when log_analytics_workspace_creation_enabled is true."
-  }
-}
-
 variable "resource_group_name" {
   type        = string
   description = "The name of the Azure Resource Group where the resources will be created."
@@ -208,10 +168,34 @@ variable "log_analytics_workspace_cmk_for_query_forced" {
   description = "Whether or not to force the use of customer-managed keys for query in the Log Analytics Workspace."
 }
 
+variable "log_analytics_workspace_creation_enabled" {
+  type        = bool
+  default     = true
+  description = "Whether or not to create a Log Analytics Workspace."
+}
+
 variable "log_analytics_workspace_daily_quota_gb" {
   type        = number
   default     = null
   description = "The daily ingestion quota in GB for the Log Analytics Workspace."
+}
+
+variable "log_analytics_workspace_id" {
+  type        = string
+  default     = null
+  description = "The ID of the pre-existing Log Analytics Workspace to use. Required if `log_analytics_workspace_creation_enabled` is `false`."
+
+  validation {
+    condition = (
+      var.log_analytics_workspace_creation_enabled == true ||
+      (
+        var.log_analytics_workspace_creation_enabled == false &&
+        var.log_analytics_workspace_id != null &&
+        can(regex("^/subscriptions/[0-9a-fA-F-]+/resourceGroups/[^/]+/providers/Microsoft.OperationalInsights/workspaces/[^/]+$", var.log_analytics_workspace_id))
+      )
+    )
+    error_message = "You must supply a valid Log Analytics Workspace resource ID when log_analytics_workspace_creation_enabled is false.\nThe resource ID when specified must have the format '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}'."
+  }
 }
 
 variable "log_analytics_workspace_internet_ingestion_enabled" {
@@ -233,6 +217,20 @@ variable "log_analytics_workspace_local_authentication_enabled" {
   default     = true
   description = "Whether or not local authentication is enabled for the Log Analytics Workspace."
   nullable    = false
+}
+
+variable "log_analytics_workspace_name" {
+  type        = string
+  default     = null
+  description = "The name of the Log Analytics Workspace to create."
+
+  validation {
+    condition = (
+      var.log_analytics_workspace_creation_enabled == false ||
+      (var.log_analytics_workspace_creation_enabled == true && var.log_analytics_workspace_name != null)
+    )
+    error_message = "You must supply a value for log_analytics_workspace_name when log_analytics_workspace_creation_enabled is true."
+  }
 }
 
 variable "log_analytics_workspace_reservation_capacity_in_gb_per_day" {
