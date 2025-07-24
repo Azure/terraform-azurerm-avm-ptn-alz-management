@@ -1,3 +1,3 @@
-# Basic of the Azure Landings Zones Management Module
+# Basic Usage of the Azure Landing Zones Management Module
 
-This code sample shows how to create the resources using default settings.
+This code sample demonstrates how to create resources using an existing Log Analytics Workspace (BYO workspace scenario).
