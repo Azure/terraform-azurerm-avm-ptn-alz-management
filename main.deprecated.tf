@@ -12,3 +12,9 @@ removed {
     destroy = false
   }
 }
+
+#Added to support BYO Log Analytics Workspace
+moved {
+  from = azurerm_log_analytics_workspace.management
+  to   = azurerm_log_analytics_workspace.management[0]
+}

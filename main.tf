@@ -8,6 +8,8 @@ resource "azurerm_resource_group" "management" {
 }
 
 resource "azurerm_log_analytics_workspace" "management" {
+  count = var.log_analytics_workspace_creation_enabled ? 1 : 0
+
   location                           = var.location
   name                               = var.log_analytics_workspace_name
   resource_group_name                = local.resource_group_name
@@ -16,7 +18,7 @@ resource "azurerm_log_analytics_workspace" "management" {
   daily_quota_gb                     = var.log_analytics_workspace_daily_quota_gb
   internet_ingestion_enabled         = var.log_analytics_workspace_internet_ingestion_enabled
   internet_query_enabled             = var.log_analytics_workspace_internet_query_enabled
-  local_authentication_disabled      = var.log_analytics_workspace_local_authentication_disabled
+  local_authentication_enabled       = var.log_analytics_workspace_local_authentication_enabled
   reservation_capacity_in_gb_per_day = var.log_analytics_workspace_reservation_capacity_in_gb_per_day
   retention_in_days                  = var.log_analytics_workspace_retention_in_days
   sku                                = var.log_analytics_workspace_sku
@@ -56,7 +58,7 @@ resource "azurerm_log_analytics_linked_service" "management" {
   count = var.linked_automation_account_creation_enabled ? 1 : 0
 
   resource_group_name = local.resource_group_name
-  workspace_id        = azurerm_log_analytics_workspace.management.id
+  workspace_id        = local.log_analytics_workspace_id
   read_access_id      = azurerm_automation_account.management[0].id
   write_access_id     = null
 }
@@ -67,8 +69,8 @@ resource "azurerm_log_analytics_solution" "management" {
   location              = var.location
   resource_group_name   = local.resource_group_name
   solution_name         = basename(each.value.product)
-  workspace_name        = var.log_analytics_workspace_name
-  workspace_resource_id = azurerm_log_analytics_workspace.management.id
+  workspace_name        = local.log_analytics_workspace_name
+  workspace_resource_id = local.log_analytics_workspace_id
   tags                  = var.tags
 
   plan {
@@ -85,7 +87,7 @@ resource "azapi_resource" "sentinel_onboarding" {
   count = var.sentinel_onboarding != null ? 1 : 0
 
   name      = var.sentinel_onboarding.name
-  parent_id = azurerm_log_analytics_workspace.management.id
+  parent_id = local.log_analytics_workspace_id
   type      = "Microsoft.SecurityInsights/onboardingStates@2024-03-01"
   body = {
     properties = {

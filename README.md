@@ -76,12 +76,6 @@ Description: The Azure region where the resources will be deployed.
 
 Type: `string`
 
-### <a name="input_log_analytics_workspace_name"></a> [log\_analytics\_workspace\_name](#input\_log\_analytics\_workspace\_name)
-
-Description: The name of the Log Analytics Workspace to create.
-
-Type: `string`
-
 ### <a name="input_resource_group_name"></a> [resource\_group\_name](#input\_resource\_group\_name)
 
 Description: The name of the Azure Resource Group where the resources will be created.
@@ -280,11 +274,27 @@ Type: `bool`
 
 Default: `null`
 
+### <a name="input_log_analytics_workspace_creation_enabled"></a> [log\_analytics\_workspace\_creation\_enabled](#input\_log\_analytics\_workspace\_creation\_enabled)
+
+Description: Whether or not to create a Log Analytics Workspace.
+
+Type: `bool`
+
+Default: `true`
+
 ### <a name="input_log_analytics_workspace_daily_quota_gb"></a> [log\_analytics\_workspace\_daily\_quota\_gb](#input\_log\_analytics\_workspace\_daily\_quota\_gb)
 
 Description: The daily ingestion quota in GB for the Log Analytics Workspace.
 
 Type: `number`
+
+Default: `null`
+
+### <a name="input_log_analytics_workspace_id"></a> [log\_analytics\_workspace\_id](#input\_log\_analytics\_workspace\_id)
+
+Description: The ID of the pre-existing Log Analytics Workspace to use. Required if `log_analytics_workspace_creation_enabled` is `false`.
+
+Type: `string`
 
 Default: `null`
 
@@ -304,13 +314,21 @@ Type: `bool`
 
 Default: `true`
 
-### <a name="input_log_analytics_workspace_local_authentication_disabled"></a> [log\_analytics\_workspace\_local\_authentication\_disabled](#input\_log\_analytics\_workspace\_local\_authentication\_disabled)
+### <a name="input_log_analytics_workspace_local_authentication_enabled"></a> [log\_analytics\_workspace\_local\_authentication\_enabled](#input\_log\_analytics\_workspace\_local\_authentication\_enabled)
 
-Description: Whether or not local authentication is disabled for the Log Analytics Workspace.
+Description: Whether or not local authentication is enabled for the Log Analytics Workspace.
 
 Type: `bool`
 
-Default: `false`
+Default: `true`
+
+### <a name="input_log_analytics_workspace_name"></a> [log\_analytics\_workspace\_name](#input\_log\_analytics\_workspace\_name)
+
+Description: The name of the Log Analytics Workspace to create.
+
+Type: `string`
+
+Default: `null`
 
 ### <a name="input_log_analytics_workspace_reservation_capacity_in_gb_per_day"></a> [log\_analytics\_workspace\_reservation\_capacity\_in\_gb\_per\_day](#input\_log\_analytics\_workspace\_reservation\_capacity\_in\_gb\_per\_day)
 
