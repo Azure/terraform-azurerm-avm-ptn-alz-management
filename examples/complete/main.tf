@@ -70,6 +70,7 @@ module "management" {
   log_analytics_workspace_retention_in_days                  = 50
   log_analytics_workspace_sku                                = "CapacityReservation"
   resource_group_creation_enabled                            = false
+  sentinel_onboarding                                        = {}
   tags = {
     environment = "dev"
   }
