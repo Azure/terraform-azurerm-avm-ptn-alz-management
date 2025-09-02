@@ -36,7 +36,7 @@ The following requirements are needed by this module:
 
 - <a name="requirement_azapi"></a> [azapi](#requirement\_azapi) (~> 2.4)
 
-- <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) (~> 4.0)
+- <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) (~> 4.35)
 
 - <a name="requirement_modtm"></a> [modtm](#requirement\_modtm) (~> 0.3)
 
@@ -151,7 +151,7 @@ Default: `"Basic"`
 
 ### <a name="input_data_collection_rules"></a> [data\_collection\_rules](#input\_data\_collection\_rules)
 
-Description: Enables customisation of the data collection rules for Azure Monitor.  
+Description: Enables customisation of the data collection rules for Azure Monitor.
 This is an object with attributes pertaining to the three DCRs that are created by this module.
 
 Each object has the following attributes:
@@ -209,8 +209,8 @@ Default:
 
 ### <a name="input_enable_telemetry"></a> [enable\_telemetry](#input\_enable\_telemetry)
 
-Description: This variable controls whether or not telemetry is enabled for the module.  
-For more information see <https://aka.ms/avm/telemetryinfo>.  
+Description: This variable controls whether or not telemetry is enabled for the module.
+For more information see <https://aka.ms/avm/telemetryinfo>.
 If it is set to false, then no telemetry will be collected.
 
 Type: `bool`
@@ -227,7 +227,7 @@ Default: `false`
 
 ### <a name="input_log_analytics_solution_plans"></a> [log\_analytics\_solution\_plans](#input\_log\_analytics\_solution\_plans)
 
-Description: The Log Analytics Solution Plans to create.  
+Description: The Log Analytics Solution Plans to create.
 Do not add the SecurityInsights solution plan here, this deployment method is deprecated. Instead refer to `sentinel_onboarding` variable.
 
 The value of this variable is a list of objects with the following attributes:
@@ -395,7 +395,7 @@ Default: `null`
 
 ### <a name="input_timeouts"></a> [timeouts](#input\_timeouts)
 
-Description: A map of timeouts to apply to the creation and destruction of resources.  
+Description: A map of timeouts to apply to the creation and destruction of resources.
 If using retry, the maximum elapsed retry time is governed by this value.
 
 The object has attributes for each resource type, with the following optional attributes:
