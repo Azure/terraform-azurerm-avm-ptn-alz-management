@@ -94,6 +94,10 @@ resource "azapi_resource" "sentinel_onboarding" {
       customerManagedKey = var.sentinel_onboarding.customer_managed_key_enabled
     }
   }
+  create_headers = var.enable_telemetry ? { "User-Agent" : local.avm_azapi_header } : null
+  delete_headers = var.enable_telemetry ? { "User-Agent" : local.avm_azapi_header } : null
+  read_headers   = var.enable_telemetry ? { "User-Agent" : local.avm_azapi_header } : null
+  update_headers = var.enable_telemetry ? { "User-Agent" : local.avm_azapi_header } : null
 
   timeouts {
     create = var.timeouts.sentinel_onboarding.create
@@ -120,8 +124,12 @@ resource "azapi_resource" "data_collection_rule" {
   parent_id                 = local.resource_group_resource_id
   type                      = each.value.type
   body                      = each.value.body
+  create_headers            = var.enable_telemetry ? { "User-Agent" : local.avm_azapi_header } : null
+  delete_headers            = var.enable_telemetry ? { "User-Agent" : local.avm_azapi_header } : null
+  read_headers              = var.enable_telemetry ? { "User-Agent" : local.avm_azapi_header } : null
   schema_validation_enabled = each.value.schema_validation_enabled
   tags                      = each.value.tags
+  update_headers            = var.enable_telemetry ? { "User-Agent" : local.avm_azapi_header } : null
 
   timeouts {
     create = var.timeouts.data_collection_rule.create
