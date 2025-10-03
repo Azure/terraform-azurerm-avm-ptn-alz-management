@@ -138,3 +138,12 @@ resource "azapi_resource" "data_collection_rule" {
     update = var.timeouts.data_collection_rule.update
   }
 }
+
+resource "azurerm_management_lock" "management" {
+  for_each = local.resource_locks_processed
+
+  name       = each.value.lock_level
+  scope      = each.value.scope
+  lock_level = each.value.lock_level
+  notes      = "Managed by avm-ptn-alz-management Terraform - ${each.value.lock_level} resource lock"
+}
