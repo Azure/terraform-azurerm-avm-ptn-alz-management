@@ -1,6 +1,15 @@
 variable "automation_account_name" {
   type        = string
+  default     = null
   description = "The name of the Azure Automation Account to create."
+
+  validation {
+    condition = (
+      var.linked_automation_account_creation_enabled == false ||
+      (var.linked_automation_account_creation_enabled == true && var.automation_account_name != null)
+    )
+    error_message = "You must supply a value for automation_account_name when linked_automation_account_creation_enabled is true."
+  }
 }
 
 variable "location" {
