@@ -81,14 +81,6 @@ Type: `string`
 
 The following input variables are optional (have default values):
 
-### <a name="input_automation_account_name"></a> [automation\_account\_name](#input\_automation\_account\_name)
-
-Description: The name of the Azure Automation Account to create.
-
-Type: `string`
-
-Default: `null`
-
 ### <a name="input_automation_account_encryption"></a> [automation\_account\_encryption](#input\_automation\_account\_encryption)
 
 Description: The encryption configuration for the Azure Automation Account.
@@ -130,6 +122,14 @@ Default: `true`
 ### <a name="input_automation_account_location"></a> [automation\_account\_location](#input\_automation\_account\_location)
 
 Description: The Azure region of the Azure Automation Account to deploy. This supports overriding the location variable in specific cases.
+
+Type: `string`
+
+Default: `null`
+
+### <a name="input_automation_account_name"></a> [automation\_account\_name](#input\_automation\_account\_name)
+
+Description: The name of the Azure Automation Account to create.
 
 Type: `string`
 

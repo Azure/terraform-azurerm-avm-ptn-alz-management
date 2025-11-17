@@ -27,7 +27,6 @@ resource "azurerm_log_analytics_workspace" "this" {
 module "management" {
   source = "../.."
 
-  automation_account_name                  = "aa-terraform-${random_id.id.hex}"
   location                                 = local.location
   resource_group_name                      = azurerm_resource_group.this.name
   log_analytics_workspace_creation_enabled = false
