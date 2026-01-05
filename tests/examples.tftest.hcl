@@ -18,3 +18,11 @@ run "examples_complete" {
   }
 }
 
+run "examples_no_automation_account" {
+  command = plan
+
+  module {
+    source = "./examples/no_automation_account"
+  }
+}
+

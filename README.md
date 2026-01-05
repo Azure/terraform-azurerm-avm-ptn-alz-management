@@ -65,12 +65,6 @@ The following resources are used by this module:
 
 The following input variables are required:
 
-### <a name="input_automation_account_name"></a> [automation\_account\_name](#input\_automation\_account\_name)
-
-Description: The name of the Azure Automation Account to create.
-
-Type: `string`
-
 ### <a name="input_location"></a> [location](#input\_location)
 
 Description: The Azure region where the resources will be deployed.
@@ -128,6 +122,14 @@ Default: `true`
 ### <a name="input_automation_account_location"></a> [automation\_account\_location](#input\_automation\_account\_location)
 
 Description: The Azure region of the Azure Automation Account to deploy. This supports overriding the location variable in specific cases.
+
+Type: `string`
+
+Default: `null`
+
+### <a name="input_automation_account_name"></a> [automation\_account\_name](#input\_automation\_account\_name)
+
+Description: The name of the Azure Automation Account to create.
 
 Type: `string`
 
