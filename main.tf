@@ -1,4 +1,3 @@
-
 resource "azurerm_resource_group" "management" {
   count = var.resource_group_creation_enabled ? 1 : 0
 
@@ -44,6 +43,7 @@ resource "azurerm_automation_account" "management" {
       user_assigned_identity_id = var.automation_account_encryption.user_assigned_identity_id
     }
   }
+
   dynamic "identity" {
     for_each = var.automation_account_identity == null ? [] : ["Identity"]
 
