@@ -30,6 +30,7 @@ module "management" {
   automation_account_name                  = "aa-terraform-${random_id.id.hex}"
   location                                 = local.location
   resource_group_name                      = azurerm_resource_group.this.name
+  enable_telemetry                         = false
   log_analytics_workspace_creation_enabled = false
   log_analytics_workspace_id               = azurerm_log_analytics_workspace.this.id
   resource_group_creation_enabled          = false

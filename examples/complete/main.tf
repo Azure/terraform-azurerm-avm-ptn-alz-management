@@ -41,6 +41,7 @@ module "management" {
       name = "dcr-defender-sql-${random_id.id.hex}"
     }
   }
+  enable_telemetry                           = false
   linked_automation_account_creation_enabled = true
   log_analytics_solution_plans = [
     {
