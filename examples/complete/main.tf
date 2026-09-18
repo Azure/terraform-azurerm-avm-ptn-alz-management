@@ -60,6 +60,18 @@ module "management" {
       product   = "OMSGallery/ContainerInsights"
       publisher = "Microsoft"
     },
+    {
+      product   = "OMSGallery/VMInsights"
+      publisher = "Microsoft"
+    },
+    {
+      product   = "OMSGallery/SQLVulnerabilityAssessment"
+      publisher = "Microsoft"
+    },
+    {
+      product   = "OMSGallery/SQLAdvancedThreatProtection"
+      publisher = "Microsoft"
+    },
   ]
   log_analytics_workspace_allow_resource_only_permissions    = true
   log_analytics_workspace_cmk_for_query_forced               = true

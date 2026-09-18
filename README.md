@@ -7,7 +7,7 @@ This module deploys the management resource for Azure Landings Zones.
 ## Features
 
 - Deployment of Log Analytics Workspace.
-- Opitional deployment of Azure Automation Account.
+- Optional deployment of Azure Automation Account.
 - Optional deployment of Azure Resource Group.
 - Customizable Log Analytics Solutions.
 - Optional deployment of Data Collections Rules.
@@ -161,6 +161,14 @@ Each object has the following attributes:
 - location (Optional) - The Azure region of the data collection rule. Defaults to the value of the location variable.
 - tags (Optional) - A map of tags to apply to the data collection rule. Defaults to `null`.
 
+The following solution plans are required when the corresponding DCR is enabled:
+
+- The `change_tracking` DCR requires the `OMSGallery/ChangeTracking` solution plan.
+- The `vm_insights` DCR requires the `OMSGallery/VMInsights` solution plan.
+- The `defender_sql` DCR requires the `OMSGallery/SQLVulnerabilityAssessment` and `OMSGallery/SQLAdvancedThreatProtection` solution plans.
+
+All solution plans must be enabled in the Log Analytics workspace.
+
 The defender\_sql object has an additional attribute:
 
 - enable\_collection\_of\_sql\_queries\_for\_security\_research (Optional) - Whether or not to enable collection of SQL queries for security research. Defaults to `false`.
@@ -254,6 +262,18 @@ Default:
   },
   {
     "product": "OMSGallery/VMInsights",
+    "publisher": "Microsoft"
+  },
+  {
+    "product": "OMSGallery/ChangeTracking",
+    "publisher": "Microsoft"
+  },
+  {
+    "product": "OMSGallery/SQLVulnerabilityAssessment",
+    "publisher": "Microsoft"
+  },
+  {
+    "product": "OMSGallery/SQLAdvancedThreatProtection",
     "publisher": "Microsoft"
   }
 ]
