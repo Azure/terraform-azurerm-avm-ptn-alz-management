@@ -1,0 +1,11 @@
+{
+  "$schema": "https://raw.githubusercontent.com/Azure/azure-verified-modules-tools/main/src/Avm.Authoring/Resources/Schemas/v1/avm-module-metadata.schema.json",
+  "moduleDisplayName": "ALZ Management",
+  "moduleDescription": "AVM Pattern Module that handles all aspects of the ALZ management resources",
+  "canonicalType": "alz-management",
+  "owners": [
+    "yeddlapurishivasai",
+    "akshayrohilla"
+  ],
+  "telemetryIdPrefix": "46d3xtrf.ptn.05b994a"
+}
