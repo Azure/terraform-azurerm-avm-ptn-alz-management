@@ -129,4 +129,8 @@ resource "azapi_resource" "data_collection_rule" {
     read   = var.timeouts.data_collection_rule.read
     update = var.timeouts.data_collection_rule.update
   }
+
+  depends_on = [
+    azurerm_log_analytics_solution.management
+  ]
 }

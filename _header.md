@@ -5,7 +5,7 @@ This module deploys the management resource for Azure Landings Zones.
 ## Features
 
 - Deployment of Log Analytics Workspace.
-- Opitional deployment of Azure Automation Account.
+- Optional deployment of Azure Automation Account.
 - Optional deployment of Azure Resource Group.
 - Customizable Log Analytics Solutions.
 - Optional deployment of Data Collections Rules.
