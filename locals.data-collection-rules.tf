@@ -2,7 +2,7 @@ locals {
   data_collection_rule_change_tracking = var.data_collection_rules.change_tracking.enabled ? {
     change_tracking = {
       name                      = var.data_collection_rules.change_tracking.name
-      type                      = "Microsoft.Insights/dataCollectionRules@2021-04-01"
+      type                      = "Microsoft.Insights/dataCollectionRules@2024-03-11"
       parent_id                 = local.resource_group_resource_id
       location                  = var.data_collection_rules.change_tracking.location == null ? var.location : var.data_collection_rules.change_tracking.location
       schema_validation_enabled = true
@@ -277,7 +277,7 @@ locals {
     defender_sql = {
       name                      = var.data_collection_rules.defender_sql.name
       parent_id                 = local.resource_group_resource_id
-      type                      = "Microsoft.Insights/dataCollectionRules@2021-04-01"
+      type                      = "Microsoft.Insights/dataCollectionRules@2024-03-11"
       location                  = var.data_collection_rules.defender_sql.location == null ? var.location : var.data_collection_rules.defender_sql.location
       schema_validation_enabled = true
       tags                      = var.data_collection_rules.defender_sql.tags == null ? var.tags : var.data_collection_rules.defender_sql.tags
@@ -337,7 +337,7 @@ locals {
     vm_insights = {
       name                      = var.data_collection_rules.vm_insights.name
       parent_id                 = local.resource_group_resource_id
-      type                      = "Microsoft.Insights/dataCollectionRules@2021-04-01"
+      type                      = "Microsoft.Insights/dataCollectionRules@2024-03-11"
       location                  = var.data_collection_rules.vm_insights.location == null ? var.location : var.data_collection_rules.vm_insights.location
       tags                      = var.data_collection_rules.vm_insights.tags == null ? var.tags : var.data_collection_rules.vm_insights.tags
       schema_validation_enabled = false
