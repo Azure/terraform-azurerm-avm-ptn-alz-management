@@ -104,6 +104,14 @@ Each object has the following attributes:
 - location (Optional) - The Azure region of the data collection rule. Defaults to the value of the location variable.
 - tags (Optional) - A map of tags to apply to the data collection rule. Defaults to `null`.
 
+The following solution plans are required when the corresponding DCR is enabled:
+
+- The `change_tracking` DCR requires the `OMSGallery/ChangeTracking` solution plan.
+- The `vm_insights` DCR requires the `OMSGallery/VMInsights` solution plan.
+- The `defender_sql` DCR requires the `OMSGallery/SQLVulnerabilityAssessment` and `OMSGallery/SQLAdvancedThreatProtection` solution plans.
+
+All solution plans must be enabled in the Log Analytics workspace.
+
 The defender_sql object has an additional attribute:
 
 - enable_collection_of_sql_queries_for_security_research (Optional) - Whether or not to enable collection of SQL queries for security research. Defaults to `false`.
@@ -142,6 +150,18 @@ variable "log_analytics_solution_plans" {
       product   = "OMSGallery/VMInsights"
       publisher = "Microsoft"
     },
+    {
+      product   = "OMSGallery/ChangeTracking"
+      publisher = "Microsoft"
+    },
+    {
+      product   = "OMSGallery/SQLVulnerabilityAssessment"
+      publisher = "Microsoft"
+    },
+    {
+      product   = "OMSGallery/SQLAdvancedThreatProtection"
+      publisher = "Microsoft"
+    }
   ]
   description = <<DESCRIPTION
 The Log Analytics Solution Plans to create.
